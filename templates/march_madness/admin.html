@@ -1,0 +1,1187 @@
+{% extends 'march_madness/base.html' %}
+{% block title %}March Madness{% endblock %}
+{% block site_title %}{{site.0.name}}{% endblock %}
+{% block nav %}admin{% endblock %}
+{% block css %}        
+		<link href="/static/css/admin.css" rel="stylesheet" type="text/css"/>{% endblock %}
+{% block admin %}
+        {% if admin == 1%}
+        <li id="nav_admin"><a href="/site-admin" title="Admin">Admin</a></li>
+        {% endif %}{% endblock %}
+{% block content %}
+<section class="container theme-showcase" id="index" role="main">
+        <section class="jumbotron">
+<h3>Admin page</h3>
+<div class="bs-component">
+              <ul class="nav nav-tabs">
+                <li class="active"><a href="#site" data-toggle="tab">Site</a></li>
+                <li class="dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="" data-toggle="tab">Teams<span class="caret"></span></a>
+			<ul class="dropdown-menu">
+		        	<li><a href="#first_four" data-toggle="tab">First Four</a></li>
+				{% if regions %}
+				<li><a id="region_1_dropdown" href="#region_1_dropdown_data" data-toggle="tab">{{regions.0.region_name}}</a></li>
+                                <li><a id="region_2_dropdown" href="#region_2_dropdown_data" data-toggle="tab">{{regions.1.region_name}}</a></li>
+                                <li><a id="region_3_dropdown" href="#region_3_dropdown_data" data-toggle="tab">{{regions.2.region_name}}</a></li>
+                                <li><a id="region_4_dropdown" href="#region_4_dropdown_data" data-toggle="tab">{{regions.3.region_name}}</a></li>
+				{% else %}
+                                <li><a id="region_1_dropdown" href="#region_1_dropdown_data" data-toggle="tab">Region 1</a></li>
+                                <li><a id="region_2_dropdown" href="#region_2_dropdown_data" data-toggle="tab">REgion 2</a></li>
+                                <li><a id="region_3_dropdown" href="#region_3_dropdown_data" data-toggle="tab">REgion 3</a></li>
+                                <li><a id="region_4_dropdown" href="#region_4_dropdown_data" data-toggle="tab">Region 4</a></li>
+				{% endif %}
+			</ul>
+		</li>
+                <li><a href="#rules" data-toggle="tab">Rules</a></li>
+                <li><a href="#blog" data-toggle="tab">Blog</a></li>
+                <li><a href="#email" data-toggle="tab">Email</a></li>
+
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    Dropdown <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#dropdown1" data-toggle="tab">Action</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#dropdown2" data-toggle="tab">Another action</a></li>
+                  </ul>
+                </li>
+              </ul>
+              <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade active in" id="site">
+			<div id="site_info">
+				<div class="site_form">
+					<form id="site_form" method="GET" action="">
+					{% csrf_token %}
+					<input type="hidden" name="form" value="site_form" />
+
+					{% for x in site %}
+					<div class="clearfix form-item">
+                                		<label for="site_name">Site Name: <span class="required">*</span></label>
+						<input type="text" class="" name="site_name" id="site_name" value="{{x.name}}"required />
+					</div>
+                	                <div class="clearfix form-item">
+                        	                <label for="sweet_16">Sweet 16 Pool:</label>
+                                	        <input type="checkbox" class="" id="sweet_16" name="sweet_16" value="true" {% if x.sweet_16 == 1 %}checked{% endif%} />
+	                                </div>	
+					{% endfor %}
+					{% if regions %}
+					{% for x in regions %}
+                	                <div class="clearfix form-item">
+                        	                <label for="region_{{x.id}}">Region {{x.id}}: <span class="required">*</span></label>
+                                	        <input type="text" class="" name="region_{{x.id}}" id="region_{{x.id}}" value="{{x.region_name}}"required />
+	                                </div>
+					{% endfor %}
+					{% else %}
+                	                <div class="clearfix form-item">
+                        	                <label for="region_1">Region 1: <span class="required">*</span></label>
+                                	        <input type="text" class="" name="region_1" id="region_1" value="MidWest"required />
+	                                </div>
+					
+                	                <div class="clearfix form-item">
+                        	                <label for="region_2">Region 2: <span class="required">*</span></label>
+                                	        <input type="text" class="" name="region_2" id="region_2" value="East"required />
+	                                </div>
+					
+                	                <div class="clearfix form-item">
+                        	                <label for="region_3">Region 3: <span class="required">*</span></label>
+                                	        <input type="text" class="" name="region_3" id="region_3" value="West"required />
+	                                </div>
+					
+                	                <div class="clearfix form-item">
+                        	                <label for="region_4">Region 4: <span class="required">*</span></label>
+                                	        <input type="text" class="" name="region_4" id="region_4" value="South"required />
+	                                </div>
+					{% endif %}
+					<div class="form-item">
+					<button class="btn btn-sm btn-info">Update</button>
+					</div>
+					</form>
+				</div>
+				<div class="region_data">
+					<div class="region_1_3">
+						<h4><label class="label label-info" for="region_1">Region 1</label></h4>
+                                                <h5><label class="label label-default">VS</label></h5>
+                                                <h4><label class="label label-danger" for="region_3">Region 3</label></h4>
+					</div>
+					<div class="region_2_4">
+						<h4><label class="label label-success" for="region_2">Region 2</label></h4>
+						<h5><label class="label label-default">VS</label></h5>
+						<h4><label class="label label-warning" for="region_4">Region 4</label></h4>
+					</div>
+					<div class="winner_1">
+						<h5><label class="label label-primary">Winners plays for</label></h5>
+					</div>
+					<div class="winner_2">
+                                                <h5><label class="label label-primary">National Championship</label></h5>
+					</div>
+				</div>
+			</div>
+			<div id="site_modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="site_info_label">
+				<div class="modal-dialog modal-sm">
+					<div id="site_modal_content" class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title" id="site_info_label">Success</h4>
+						</div>
+						<div class="modal-body">
+							Congratulations!<br>
+							All fields have been updated.
+						</div>
+						<div class="modal-footer">
+							&nbsp;
+                                                        <button href="#first_four" data-toggle="tab" type="button" class="btn btn-success center" data-dismiss="modal" aria-label="Close">Close <span aria-hidden="true">&times;</span></button>
+
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+		</div>
+                <div class="tab-pane fade" id="first_four">
+                	<div class="team_info">
+				<form id="first_four_form" action=""> 
+                                        {% csrf_token %}
+				<div class="first_four">
+					<div class="first_four_title panel panel-primary">
+					<div class="panel-heading">
+						<div class="panel-title" id="first_four">First Four</div>
+					</div>
+					</div>
+					{% if ff %}
+					{% for x in ff %}
+					<div class="region region_{{x.6}} panel panel-info">
+				        <div class="panel-heading">
+				                <div class="panel-title" id="region_{{x.6}}">{{x.7}}</div>
+				        </div>
+				        <div id="game_{{x.0}}" class="panel-body">
+				                <h5><label class="label label-default" for ="game_{{x.0}}_hteam_seed">Seed</label></h5>
+						{% if site.0.bracket_setup == True %}
+				                <select id="game_{{x.0}}_hteam_seed" name="game_{{x.0}}_hteam_seed" onChange="firstFour('game_{{x.0}}', 'hteam', {{x.6}})" class="disabled" disabled>
+						{% else %}
+                                                <select id="game_{{x.0}}_hteam_seed" name="game_{{x.0}}_hteam_seed" onChange="firstFour('game_{{x.0}}', 'hteam', {{x.6}})" required>
+						{% endif %}
+				                {% for y in seeds %}
+				                        {% if x.1 == y %}
+                                				<option value="{{y}}" selected>{{y}}</option>
+				                        {% else %}
+                                				<option value="{{y}}">{{y}}</option>
+				                        {% endif %}
+				                {% endfor %}
+				                </select>
+				                <input id="game_{{x.0}}_hteam_name" name = "game_{{x.0}}_hteam_name" type="text" value="{{x.2}}" placeholder="Home Team" required />
+				                <input id-"game_{{x.0}}_win_game" name="game_{{x.0}}_win_game" type="hidden" value="{{x.5}}" />
+                                                {% if site.0.bracket_setup == True %}
+                                                <select id="game_{{x.0}}_vteam_seed" name="game_{{x.0}}_vteam_seed" onChange="firstFour('game_{{x.0}}', 'vteam', {{x.6}})" class="disabled" disabled>
+						{% else %}
+				                <select id="game_{{x.0}}_vteam_seed" name="game_{{x.0}}_vteam_seed" onChange="firstFour('game_{{x.0}}', 'vteam', {{x.6}})" required>
+						{% endif %}
+				                {% for y in seeds %}
+				                        {% if x.3 == y %}
+                                				<option value="{{y}}" selected>{{y}}</option>
+				                        {% else %}
+                                				<option value="{{y}}">{{y}}</option>
+				                        {% endif %}
+				                {% endfor %}
+				                </select>
+				                <input id="game_{{x.0}}_vteam_name" name = "game_{{x.0}}_vteam_name" type="text" value="{{x.4}}" placeholder="Home Team" required />
+				        </div>
+					</div>
+					{% endfor %}
+					{% else %}
+					<div class="region region_{{regions.0.id}} panel panel-info">
+						<div class="panel-heading">
+							<div class="panel-title" id="region_{{regions.0.id}}">{{regions.0.region_name}}</div>
+						</div>
+						<div id="game_1" class="panel-body">
+												<h5><label class="label label-default" for="game_1_hteam_seed">Seed</label></h5>
+						<select id="game_1_hteam_seed" name="game_1_hteam_seed" onChange="firstFour('game_1', 'hteam', {{regions.0.id}})" required autofocus>
+							<option value="16">16</option>
+                                                        <option value="15">15</option>
+                                                        <option value="14">14</option>
+                                                        <option value="13">13</option>
+                                                        <option value="12">12</option>
+                                                        <option value="11">11</option>
+                                                        <option value="10">10</option>
+                                                        <option value="9">9</option>
+                                                        <option value="8">8</option>
+                                                        <option value="7">7</option>
+                                                        <option value="6">6</option>
+                                                        <option value="5">5</option>
+                                                        <option value="4">4</option>
+                                                        <option value="3">3</option>
+                                                        <option value="2">2</option>
+                                                        <option value="1">1</option>
+						</select>
+						<input id="game_1_hteam_name" name="game_1_hteam_name" type="text" value="" placeholder="Home Team" required />
+						<input id="game_1_win_game" name="game_1_win_game" type="hidden" value="5"/>
+                                                <select id="game_1_vteam_seed" name="game_1_vteam_seed" onChange="firstFour('game_1', 'vteam', {{regions.0.id}})" required>
+                                                        <option value="16">16</option>
+                                                        <option value="15">15</option>
+                                                        <option value="14">14</option>
+                                                        <option value="13">13</option>
+                                                        <option value="12">12</option>
+                                                        <option value="11">11</option>
+                                                        <option value="10">10</option>
+                                                        <option value="9">9</option>
+                                                        <option value="8">8</option>
+                                                        <option value="7">7</option>
+                                                        <option value="6">6</option>
+                                                        <option value="5">5</option>
+                                                        <option value="4">4</option>
+                                                        <option value="3">3</option>
+                                                        <option value="2">2</option>
+                                                        <option value="1">1</option>
+                                                </select>
+                                                <input id="game_1_vteam_name" name="game_1_vteam_name" type="text" value="" placeholder="Away Team" required />
+						</div>
+					</div>
+                                        <div class="region region_{{regions.1.id}} panel panel-info">
+                                                <div class="panel-heading">
+                                                        <div class="panel-title" id="region_{{regions.1.id}}">{{regions.1.region_name}}</div>
+                                                </div>
+                                                <div id="game_2" class="panel-body">
+                                                <h5><label class="label label-default" for="game_2_hteam_seed">Seed</label></h5>
+                                                <select id="game_2_hteam_seed" name="game_2_hteam_seed" onChange="firstFour('game_2', 'hteam', {{regions.1.id}})" required>
+                                                        <option value="16">16</option>
+                                                        <option value="15">15</option>
+                                                        <option value="14">14</option>
+                                                        <option value="13">13</option>
+                                                        <option value="12">12</option>
+                                                        <option value="11">11</option>
+                                                        <option value="10">10</option>
+                                                        <option value="9">9</option>
+                                                        <option value="8">8</option>
+                                                        <option value="7">7</option>
+                                                        <option value="6">6</option>
+                                                        <option value="5">5</option>
+                                                        <option value="4">4</option>
+                                                        <option value="3">3</option>
+                                                        <option value="2">2</option>
+                                                        <option value="1">1</option>
+                                                </select>
+                                                <input id="game_2_hteam_name" name="game_2_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_2_win_game" name="game_2_win_game" type="hidden" value="21"/>
+                                                <select id="game_2_vteam_seed" name="game_2_vteam_seed" onChange="firstFour('game_2', 'vteam', {{regions.1.id}})" required>
+                                                        <option value="16">16</option>
+                                                        <option value="15">15</option>
+                                                        <option value="14">14</option>
+                                                        <option value="13">13</option>
+                                                        <option value="12">12</option>
+                                                        <option value="11">11</option>
+                                                        <option value="10">10</option>
+                                                        <option value="9">9</option>
+                                                        <option value="8">8</option>
+                                                        <option value="7">7</option>
+                                                        <option value="6">6</option>
+                                                        <option value="5">5</option>
+                                                        <option value="4">4</option>
+                                                        <option value="3">3</option>
+                                                        <option value="2">2</option>
+                                                        <option value="1">1</option>
+                                                </select>
+                                                <input id="game_2_vteam_name" name="game_2_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                        </div>
+                                        <div class="region region_{{regions.2.id}} panel panel-info">
+                                                <div class="panel-heading">
+                                                        <div class="panel-title" id="region_{{regions.2.id}}">{{regions.2.region_name}}</div>
+                                                </div>
+                                                <div id="game_3" class="panel-body">
+                                                <h5><label class="label label-default" for="game_3_hteam_seed">Seed</label></h5>
+                                                <select id="game_3_hteam_seed" name="game_3_hteam_seed" onChange="firstFour('game_3', 'hteam', {{regions.2.id}})" required>
+                                                        <option value="16">16</option>
+                                                        <option value="15">15</option>
+                                                        <option value="14">14</option>
+                                                        <option value="13">13</option>
+                                                        <option value="12">12</option>
+                                                        <option value="11">11</option>
+                                                        <option value="10">10</option>
+                                                        <option value="9">9</option>
+                                                        <option value="8">8</option>
+                                                        <option value="7">7</option>
+                                                        <option value="6">6</option>
+                                                        <option value="5">5</option>
+                                                        <option value="4">4</option>
+                                                        <option value="3">3</option>
+                                                        <option value="2">2</option>
+                                                        <option value="1">1</option>
+                                                </select>
+                                                <input id="game_3_hteam_name" name="game_3_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_3_win_game" name="game_3_win_game" type="hidden" value="13" />
+                                                <select id="game_3_vteam_seed" name="game_3_vteam_seed" onChange="firstFour('game_3', 'vteam', {{regions.2.id}})" required>
+                                                        <option value="16">16</option>
+                                                        <option value="15">15</option>
+                                                        <option value="14">14</option>
+                                                        <option value="13">13</option>
+                                                        <option value="12">12</option>
+                                                        <option value="11">11</option>
+                                                        <option value="10">10</option>
+                                                        <option value="9">9</option>
+                                                        <option value="8">8</option>
+                                                        <option value="7">7</option>
+                                                        <option value="6">6</option>
+                                                        <option value="5">5</option>
+                                                        <option value="4">4</option>
+                                                        <option value="3">3</option>
+                                                        <option value="2">2</option>
+                                                        <option value="1">1</option>
+                                                </select>
+                                                <input id="game_3_vteam_name" name="game_3_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                        </div>
+                                        <div class="region region_{{regions.3.id}} panel panel-info">
+                                                <div class="panel-heading">
+                                                        <div class="panel-title" id="region_{{regions.3.id}}">{{regions.3.region_name}}</div>
+                                                </div>
+                                                <div id="game_4" class="panel-body">
+                                                <h5><label class="label label-default" for="game_4_hteam_seed">Seed</label></h5>
+                                                <select id="game_4_hteam_seed" name="game_4_hteam_seed" onChange="firstFour('game_4', 'hteam', {{regions.3.id}})" required>
+                                                        <option value="16">16</option>
+                                                        <option value="15">15</option>
+                                                        <option value="14">14</option>
+                                                        <option value="13">13</option>
+                                                        <option value="12">12</option>
+                                                        <option value="11">11</option>
+                                                        <option value="10">10</option>
+                                                        <option value="9">9</option>
+                                                        <option value="8">8</option>
+                                                        <option value="7">7</option>
+                                                        <option value="6">6</option>
+                                                        <option value="5">5</option>
+                                                        <option value="4">4</option>
+                                                        <option value="3">3</option>
+                                                        <option value="2">2</option>
+                                                        <option value="1">1</option>
+                                                </select>
+                                                <input id="game_4_hteam_name" name="game_4_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_4_win_game" name="game_4_win_game" type="hidden" value="29"/>
+                                                <select id="game_4_vteam_seed" name="game_4_vteam_seed" onChange="firstFour('game_4', 'vteam', {{regions.3.id}})" required>
+                                                        <option value="16">16</option>
+                                                        <option value="15">15</option>
+                                                        <option value="14">14</option>
+                                                        <option value="13">13</option>
+                                                        <option value="12">12</option>
+                                                        <option value="11">11</option>
+                                                        <option value="10">10</option>
+                                                        <option value="9">9</option>
+                                                        <option value="8">8</option>
+                                                        <option value="7">7</option>
+                                                        <option value="6">6</option>
+                                                        <option value="5">5</option>
+                                                        <option value="4">4</option>
+                                                        <option value="3">3</option>
+                                                        <option value="2">2</option>
+                                                        <option value="1">1</option>
+                                                </select>
+                                                <input id="game_4_vteam_name" name="game_4_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                        </div>
+					{% endif %}
+					<div>
+	                                        <button class="btn btn-sm btn-info">Update</button>
+					</div>				
+
+				</div>
+				</form>
+                        <div id="ff_modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="site_info_label">
+                                <div class="modal-dialog modal-sm">
+                                        <div id="site_modal_content" class="modal-content">
+                                                <div class="modal-header">
+                                                        <h4 class="modal-title" id="site_info_label">Success</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                        Congratulations!<br>
+                                                        All first four teams have been updated.
+                                                </div>
+                                                <div class="modal-footer">
+                                                        &nbsp;
+                                                        <button href="#region_1_dropdown_data" data-toggle="tab" type="button" class="btn btn-success center" data-dismiss="modal" aria-label="Close">Close <span aria-hidden="true">&times;</span></button>
+
+                                                </div>
+                                        </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+
+			</div>
+		</div>
+                <div class="tab-pane fade" id="region_1_dropdown_data">
+				<div class="round2">
+				<form id="r64_region_1_form">
+                                        {% csrf_token %}
+                                        <input type="hidden" id="r64_r1_ff_game" name="r64_r1_ff_game" value="5" />
+                                        <input type="hidden" id="r64_r1_ff_team" name="r64_r1_ff_team" value="vteam" />
+					{% if site.0.bracket_setup == True %}
+					<div class="region region_{{r64.0.6}} panel panel-info">
+						<div class="panel-heading">
+							<div class="panel-title" id="reagion_{{r64.0.6}}_team_title">{{r64.0.7}}</div>
+						</div>
+                                                {% for x in r64 %}
+                                                {% if x.6 == 1 %}
+						<div id="game_{{x.0}}" class="game panel-body">
+							<h5><label class="label label-default" for="game_{{x.0}}_hteam_seed">Seed</label></h5>
+	                                                <input id="game_{{x.0}}_hteam_seed" name="game_{{x.0}}_hteam_seed" class="seed" type="text" value="{{x.1}}" disabled>
+							{% if x.2 == 'Winner of First Four Game' %}
+        	                                        <input id="game_{{x.0}}_hteam_name" name="game_{{x.0}}_hteam_name" type="text" value="{{x.2}}" placeholder="Home Team" disabled />
+							{% else %}
+                                                        <input id="game_{{x.0}}_hteam_name" name="game_{{x.0}}_hteam_name" type="text" value="{{x.2}}" placeholder="Home Team" required />
+							{% endif %}
+                	                                <input id="game_{{x.0}}_vteam_seed" name="game_{{x.0}}_vteam_seed" class="seed" type="text" value="{{x.3}}" disabled>
+							{% if x.4 == 'Winner of First Four Game' %}
+                        	                        <input id="game_{{x.0}}_vteam_name" name="game_{{x.0}}_vteam_name" type="text" value="{{x.4}}" placeholder="Away Team" disabled />
+							{% else %}
+                                                        <input id="game_{{x.0}}_vteam_name" name="game_{{x.0}}_vteam_name" type="text" value="{{x.4}}" placeholder="Away Team" required />
+							{% endif %}
+                                		 </div>
+						{% endif %}
+						{% endfor %}
+					{% else %}
+					{% if regions %}
+                                        <div class="region region_{{regions.0.id}} panel panel-info">
+                                                <div class="panel-heading">
+                                                        <div class="panel-title" id="region_{{regions.0.id}}_team_title">{{regions.0.region_name}}</div>
+                                                </div>
+					{% else %}
+                                        <div class="region region_1 panel panel-info">
+                                                <div class="panel-heading">
+                                                        <div class="panel-title" id="region_1_team_title">Region 1</div>
+                                                </div>
+					{% endif %}
+                                                <div id="game_5" class="game panel-body">
+                                                <h5><label class="label label-default" for="game_5_hteam_seed">Seed</label></h5>
+                                                <input id="game_5_hteam_seed" name="game_5_hteam_seed" class="seed" type="hidden" value="1">
+                                                <input id="game_5_hteam_seed" name="game_5_hteam_seed" class="seed" type="text" value="1" disabled>
+                                                <input id="game_5_hteam_name" name="game_5_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_5_vteam_seed" name="game_5_vteam_seed" class="seed" type="hidden" value="16">
+                                                <input id="game_5_vteam_seed" name="game_5_vteam_seed" class="seed" type="text" value="16" disabled>
+                                                <input id="game_5_vteam_name" name="game_5_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_6" class="right game panel-body">
+                                                <h5><label class="label label-default" for="game_6_hteam_seed">Seed</label></h5>
+                                                <input id="game_6_hteam_seed" name="game_6_hteam_seed" class="seed" type="hidden" value="8">
+                                                <input id="game_6_vteam_seed" name="game_6_vteam_seed" class="seed" type="hidden" value="9">
+                                                <input id="game_6_hteam_seed" name="game_6_hteam_seed" class="seed" type="text" value="8" disabled>
+                                                <input id="game_6_hteam_name" name="game_6_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_6_vteam_seed" name="game_6_vteam_seed" class="seed" type="text" value="9" disabled>
+                                                <input id="game_6_vteam_name" name="game_6_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_7" class="game panel-body">
+                                                <h5><label class="label label-default" for="game_7_hteam_seed">Seed</label></h5>i
+                                                <input id="game_6_hteam_seed" name="game_7_hteam_seed" class="seed" type="hidden" value="5">
+                                                <input id="game_6_vteam_seed" name="game_7_vteam_seed" class="seed" type="hidden" value="12">
+                                                <input id="game_7_hteam_seed" name="game_7_hteam_seed" class="seed" type="text" value="5" disabled>
+                                                <input id="game_7_hteam_name" name="game_7_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_7_vteam_seed" name="game_7_vteam_seed" class="seed" type="text" value="12" disabled>
+                                                <input id="game_7_vteam_name" name="game_7_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_8" class="right game panel-body">
+                                                <h5><label class="label label-default" for="game_8_hteam_seed">Seed</label></h5>
+                                                <input id="game_6_hteam_seed" name="game_8_hteam_seed" class="seed" type="hidden" value="4">
+                                                <input id="game_6_vteam_seed" name="game_8_vteam_seed" class="seed" type="hidden" value="13">
+                                                <input id="game_8_hteam_seed" name="game_8_hteam_seed" class="seed" type="text" value="4" disabled>
+                                                <input id="game_8_hteam_name" name="game_8_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_8_vteam_seed" name="game_8_vteam_seed" class="seed" type="text" value="13" disabled>
+                                                <input id="game_8_vteam_name" name="game_8_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_9" class="game panel-body">
+                                                <h5><label class="label label-default" for="game_9_hteam_seed">Seed</label></h5>
+                                                <input id="game_6_hteam_seed" name="game_9_hteam_seed" class="seed" type="hidden" value="6">
+                                                <input id="game_6_vteam_seed" name="game_9_vteam_seed" class="seed" type="hidden" value="11">
+                                                <input id="game_9_hteam_seed" name="game_9_hteam_seed" class="seed" type="text" value="6" disabled>
+                                                <input id="game_9_hteam_name" name="game_9_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_9_vteam_seed" name="game_9_vteam_seed" class="seed" type="text" value="11" disabled>
+                                                <input id="game_9_vteam_name" name="game_9_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_10" class="right game panel-body">
+                                                <h5><label class="label label-default" for="game_10_hteam_seed">Seed</label></h5>
+                                                <input name="game_10_hteam_seed" class="seed" type="hidden" value="3">
+                                                <input name="game_10_vteam_seed" class="seed" type="hidden" value="14">
+                                                <input id="game_10_hteam_seed" name="game_10_hteam_seed" class="seed" type="text" value="3" disabled>
+                                                <input id="game_10_hteam_name" name="game_10_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_10_vteam_seed" name="game_10_vteam_seed" class="seed" type="text" value="14" disabled>
+                                                <input id="game_10_vteam_name" name="game_10_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_11" class="game panel-body">
+                                                <h5><label class="label label-default" for="game_11_hteam_seed">Seed</label></h5>
+                                                <input name="game_11_hteam_seed" class="seed" type="hidden" value="7">
+                                                <input name="game_11_vteam_seed" class="seed" type="hidden" value="10">
+                                                <input id="game_11_hteam_seed" name="game_11_hteam_seed" class="seed" type="text" value="7" disabled>
+                                                <input id="game_11_hteam_name" name="game_11_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_11_vteam_seed" name="game_11_vteam_seed" class="seed" type="text" value="10" disabled>
+                                                <input id="game_11_vteam_name" name="game_11_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_12" class="right game panel-body">
+                                                <h5><label class="label label-default" for="game_12_hteam_seed">Seed</label></h5>
+                                                <input name="game_12_hteam_seed" class="seed" type="hidden" value="2">
+                                                <input name="game_12_vteam_seed" class="seed" type="hidden" value="15">
+                                                <input id="game_12_hteam_seed" name="game_12_hteam_seed" class="seed" type="text" value="2" disabled>
+                                                <input id="game_12_hteam_name" name="game_12_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_12_vteam_seed" name="game_12_vteam_seed" class="seed" type="text" value="15" disabled>
+                                                <input id="game_12_vteam_name" name="game_12_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                        {% endif %}
+					</div>
+                                        <div>
+                                                <button class="btn btn-sm btn-info">Update</button>
+                                        </div>
+				</form>
+                        <div id="r64_r1_modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="r64_r1_info_label">
+                                <div class="modal-dialog modal-sm">
+                                        <div id="site_modal_content" class="modal-content">
+                                                <div class="modal-header">
+                                                        <h4 class="modal-title" id="r64_r1_info_label">Success</h4>
+                                                </div>
+                                                <div id="r1_body" class="modal-body">
+                                                        Congratulations!<br>
+                                                        All {%if regions %}{{regions.0.region_name}}{% else %}Region 1{% endif %} teams have been updated.
+                                                </div>
+                                                <div class="modal-footer">
+                                                        &nbsp;
+                                                        <button href="#region_2_dropdown_data" data-toggle="tab" type="button" class="btn btn-success center" data-dismiss="modal" aria-label="Close">Close <span aria-hidden="true">&times;</span></button>
+
+                                                </div>
+                                        </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+				</div>
+                </div>
+                <div class="tab-pane fade" id="region_2_dropdown_data">
+                                <div class="round2">
+                                <form id="r64_region_2_form" method="GET" action="/site-admin">
+                                        {% csrf_token %}
+					<input type="hidden" id="r64_r2_ff_game" name="r64_r2_ff_game" value="25" />
+					<input type="hidden" id="r64_r2_ff_team" name="r64_r2_ff_team" value="vteam" />
+                                        {% if site.0.bracket_setup %}
+                                        <div class="region region_{{r64.16.6}} panel panel-info">
+                                                <div class="panel-heading">
+                                                        <div class="panel-title" id="reagion_{{r64.16.6}}_team_title">{{r64.16.7}}</div>
+                                                </div>
+                                                {% for x in r64 %}
+                                                {% if x.6 == 2 %}
+                                                <div id="game_{{x.0}}" class="game panel-body">
+                                                        <h5><label class="label label-default" for="game_{{x.0}}_hteam_seed">Seed</label></h5>
+                                                        <input id="game_{{x.0}}_hteam_seed" name="game_{{x.0}}_hteam_seed" class="seed" type="text" value="{{x.1}}" disabled>
+                                                        {% if x.2 == 'Winner of First Four Game' %}
+                                                        <input id="game_{{x.0}}_hteam_name" name="game_{{x.0}}_hteam_name" type="text" value="{{x.2}}" placeholder="Home Team" disabled />
+                                                        {% else %}
+                                                        <input id="game_{{x.0}}_hteam_name" name="game_{{x.0}}_hteam_name" type="text" value="{{x.2}}" placeholder="Home Team" required />
+                                                        {% endif %}
+                                                        <input id="game_{{x.0}}_vteam_seed" name="game_{{x.0}}_vteam_seed" class="seed" type="text" value="{{x.3}}" disabled>
+                                                        {% if x.4 == 'Winner of First Four Game' %}
+                                                        <input id="game_{{x.0}}_vteam_name" name="game_{{x.0}}_vteam_name" type="text" value="{{x.4}}" placeholder="Away Team" disabled />
+                                                        {% else %}
+                                                        <input id="game_{{x.0}}_vteam_name" name="game_{{x.0}}_vteam_name" type="text" value="{{x.4}}" placeholder="Away Team" required />
+                                                        {% endif %}
+                                                 </div>
+                                                {% endif %}
+                                                {% endfor %}
+                                        {% else %}
+                                        {% if regions %}
+                                        <div class="region region_{{regions.1.id}} panel panel-info">
+                                                <div class="panel-heading">
+                                                        <div class="panel-title" id="region_{{regions.1.id}}_team_title">{{regions.1.region_name}}</div>
+                                                </div>
+                                        {% else %}
+                                        <div class="region region_2 panel panel-info">
+                                                <div class="panel-heading">
+                                                        <div class="panel-title" id="region_2_team_title">Region 2</div>
+                                                </div>
+                                        {% endif %}
+                                                <div id="game_21" class="game panel-body">
+                                                <h5><label class="label label-default" for="game_21_hteam_seed">Seed</label></h5>
+                                                <input name="game_21_hteam_seed" class="seed" type="hidden" value="1">
+                                                <input name="game_21_vteam_seed" class="seed" type="hidden" value="16">
+                                                <input id="game_21_hteam_seed" name="game_21_hteam_seed" class="seed" type="text" value="1" disabled>
+                                                <input id="game_21_hteam_name" name="game_21_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_21_vteam_seed" name="game_21_vteam_seed" class="seed" type="text" value="16" disabled>
+                                                <input id="game_21_vteam_name" name="game_21_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_22" class="right game panel-body">
+                                                <h5><label class="label label-default" for="game_22_hteam_seed">Seed</label></h5>
+                                                <input name="game_22_hteam_seed" class="seed" type="hidden" value="8">
+                                                <input name="game_22_vteam_seed" class="seed" type="hidden" value="9">
+                                                <input id="game_22_hteam_seed" name="game_22_hteam_seed" class="seed" type="text" value="8" disabled>
+                                                <input id="game_22_hteam_name" name="game_22_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_22_vteam_seed" name="game_22_vteam_seed" class="seed" type="text" value="9" disabled>
+                                                <input id="game_22_vteam_name" name="game_22_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_23" class="game panel-body">
+                                                <h5><label class="label label-default" for="game_23_hteam_seed">Seed</label></h5>
+                                                <input name="game_23_hteam_seed" class="seed" type="hidden" value="5">
+                                                <input name="game_23_vteam_seed" class="seed" type="hidden" value="12">
+                                                <input id="game_23_hteam_seed" name="game_23_hteam_seed" class="seed" type="text" value="5" disabled>
+                                                <input id="game_23_hteam_name" name="game_23_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_23_vteam_seed" name="game_23_vteam_seed" class="seed" type="text" value="12" disabled>
+                                                <input id="game_23_vteam_name" name="game_23_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_24" class="right game panel-body">
+                                                <h5><label class="label label-default" for="game_24_hteam_seed">Seed</label></h5>
+                                                <input name="game_24_hteam_seed" class="seed" type="hidden" value="4">
+                                                <input name="game_24_vteam_seed" class="seed" type="hidden" value="13">
+                                                <input id="game_24_hteam_seed" name="game_24_hteam_seed" class="seed" type="text" value="4" disabled>
+                                                <input id="game_24_hteam_name" name="game_24_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_24_vteam_seed" name="game_24_vteam_seed" class="seed" type="text" value="13" disabled>
+                                                <input id="game_24_vteam_name" name="game_24_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_25" class="game panel-body">
+                                                <h5><label class="label label-default" for="game_25_hteam_seed">Seed</label></h5>
+                                                <input name="game_25_hteam_seed" class="seed" type="hidden" value="6">
+                                                <input name="game_25_vteam_seed" class="seed" type="hidden" value="11">
+                                                <input id="game_25_hteam_seed" name="game_25_hteam_seed" class="seed" type="text" value="6" disabled>
+                                                <input id="game_25_hteam_name" name="game_25_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_25_vteam_seed" name="game_25_vteam_seed" class="seed" type="text" value="11" disabled>
+                                                <input id="game_25_vteam_name" name="game_25_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_26" class="right game panel-body">
+                                                <h5><label class="label label-default" for="game_26_hteam_seed">Seed</label></h5>
+                                                <input name="game_26_hteam_seed" class="seed" type="hidden" value="3">
+                                                <input name="game_26_vteam_seed" class="seed" type="hidden" value="14">
+                                                <input id="game_26_hteam_seed" name="game_26_hteam_seed" class="seed" type="text" value="3" disabled>
+                                                <input id="game_26_hteam_name" name="game_26_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_26_vteam_seed" name="game_26_vteam_seed" class="seed" type="text" value="14" disabled>
+                                                <input id="game_26_vteam_name" name="game_26_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_27" class="game panel-body">
+                                                <h5><label class="label label-default" for="game_27_hteam_seed">Seed</label></h5>
+                                                <input name="game_27_hteam_seed" class="seed" type="hidden" value="7">
+                                                <input name="game_27_vteam_seed" class="seed" type="hidden" value="10">
+                                                <input id="game_27_hteam_seed" name="game_27_hteam_seed" class="seed" type="text" value="7" disabled>
+                                                <input id="game_27_hteam_name" name="game_27_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_27_vteam_seed" name="game_27_vteam_seed" class="seed" type="text" value="10" disabled>
+                                                <input id="game_27_vteam_name" name="game_27_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_28" class="right game panel-body">
+                                                <h5><label class="label label-default" for="game_28_hteam_seed">Seed</label></h5>
+                                                <input name="game_28_hteam_seed" class="seed" type="hidden" value="2">
+                                                <input name="game_28_vteam_seed" class="seed" type="hidden" value="15">
+                                                <input id="game_28_hteam_seed" name="game_28_hteam_seed" class="seed" type="text" value="2" disabled>
+                                                <input id="game_28_hteam_name" name="game_28_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_28_vteam_seed" name="game_28_vteam_seed" class="seed" type="text" value="15" disabled>
+                                                <input id="game_28_vteam_name" name="game_28_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+					{% endif %}
+                                        </div>
+                                        <div>
+                                                <button class="btn btn-sm btn-info">Update</button>
+                                        </div>
+				</form>
+                        <div id="r64_r2_modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="site_info_label">
+                                <div class="modal-dialog modal-sm">
+                                        <div id="site_modal_content" class="modal-content">
+                                                <div class="modal-header">
+                                                        <h4 class="modal-title" id="site_info_label">Success</h4>
+                                                </div>
+                                                <div id="r2_modal" class="modal-body">
+                                                        Congratulations!<br>
+                                                        All {%if regions %}{{regions.1.region_name}}{% else %}Region 2{% endif %} teams have been updated.
+                                                </div>
+                                                <div class="modal-footer">
+                                                        &nbsp;
+                                                        <button href="#region_3_dropdown_data" data-toggle="tab" type="button" class="btn btn-success center" data-dismiss="modal" aria-label="Close">Close <span aria-hidden="true">&times;</span></button>
+
+                                                </div>
+                                        </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+                                </div>
+                </div>
+                <div class="tab-pane fade" id="region_3_dropdown_data">
+				<div class="round2">
+                                <form id="r64_region_3_form">
+                                        {% csrf_token %}
+                                        <input type="hidden" id="r64_r3_ff_game" name="r64_r3_ff_game" value="17" />
+                                        <input type="hidden" id="r64_r3_ff_team" name="r64_r3_ff_team" value="vteam" />
+                                        {% if site.0.bracket_setup %}
+                                        <div class="region region_{{r64.8.6}} panel panel-info">
+                                                <div class="panel-heading">
+                                                        <div class="panel-title" id="reagion_{{r64.8.6}}_team_title">{{r64.8.7}}</div>
+                                                </div>
+                                                {% for x in r64 %}
+                                                {% if x.6 == 3 %}
+                                                <div id="game_{{x.0}}" class="game panel-body">
+                                                        <h5><label class="label label-default" for="game_{{x.0}}_hteam_seed">Seed</label></h5>
+                                                        <input id="game_{{x.0}}_hteam_seed" name="game_{{x.0}}_hteam_seed" class="seed" type="text" value="{{x.1}}" disabled>
+                                                        {% if x.2 == 'Winner of First Four Game' %}
+                                                        <input id="game_{{x.0}}_hteam_name" name="game_{{x.0}}_hteam_name" type="text" value="{{x.2}}" placeholder="Home Team" disabled />
+                                                        {% else %}
+                                                        <input id="game_{{x.0}}_hteam_name" name="game_{{x.0}}_hteam_name" type="text" value="{{x.2}}" placeholder="Home Team" required />
+                                                        {% endif %}
+                                                        <input id="game_{{x.0}}_vteam_seed" name="game_{{x.0}}_vteam_seed" class="seed" type="text" value="{{x.3}}" disabled>
+                                                        {% if x.4 == 'Winner of First Four Game' %}
+                                                        <input id="game_{{x.0}}_vteam_name" name="game_{{x.0}}_vteam_name" type="text" value="{{x.4}}" placeholder="Away Team" disabled />
+                                                        {% else %}
+                                                        <input id="game_{{x.0}}_vteam_name" name="game_{{x.0}}_vteam_name" type="text" value="{{x.4}}" placeholder="Away Team" required />
+                                                        {% endif %}
+                                                 </div>
+                                                {% endif %}
+                                                {% endfor %}
+                                        {% else %}
+                                        {% if regions %}
+                                        <div class="region region_{{regions.1.id}} panel panel-info">
+                                                <div class="panel-heading">
+                                                        <div class="panel-title" id="region_{{regions.2.id}}_team_title">{{regions.2.region_name}}</div>
+                                                </div>
+                                        {% else %}
+                                        <div class="region region_3 panel panel-info">
+                                                <div class="panel-heading">
+                                                        <div class="panel-title" id="region_3_team_title">Region 3</div>
+                                                </div>
+                                        {% endif %}
+                                                <div id="game_13" class="game panel-body">
+                                                <h5><label class="label label-default" for="game_13_hteam_seed">Seed</label></h5>
+                                                <input name="game_13_hteam_seed" class="seed" type="hidden" value="1">
+                                                <input name="game_13_vteam_seed" class="seed" type="hidden" value="16">
+                                                <input id="game_13_hteam_seed" name="game_13_hteam_seed" class="seed" type="text" value="1" disabled>
+                                                <input id="game_13_hteam_name" name="game_13_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_13_vteam_seed" name="game_13_vteam_seed" class="seed" type="text" value="16" disabled>
+                                                <input id="game_13_vteam_name" name="game_13_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_14" class="right game panel-body">
+                                                <h5><label class="label label-default" for="game_14_hteam_seed">Seed</label></h5>
+                                                <input name="game_14_hteam_seed" class="seed" type="hidden" value="8">
+                                                <input name="game_14_vteam_seed" class="seed" type="hidden" value="9">
+                                                <input id="game_14_hteam_seed" name="game_14_hteam_seed" class="seed" type="text" value="8" disabled>
+                                                <input id="game_14_hteam_name" name="game_14_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_14_vteam_seed" name="game_14_vteam_seed" class="seed" type="text" value="9" disabled>
+                                                <input id="game_14_vteam_name" name="game_14_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_15" class="game panel-body">
+                                                <h5><label class="label label-default" for="game_15_hteam_seed">Seed</label></h5>
+                                                <input name="game_15_hteam_seed" class="seed" type="hidden" value="5">
+                                                <input name="game_15_vteam_seed" class="seed" type="hidden" value="12">
+                                                <input id="game_15_hteam_seed" name="game_15_hteam_seed" class="seed" type="text" value="5" disabled>
+                                                <input id="game_15_hteam_name" name="game_15_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_15_vteam_seed" name="game_15_vteam_seed" class="seed" type="text" value="12" disabled>
+                                                <input id="game_15_vteam_name" name="game_15_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_16" class="right game panel-body">
+                                                <h5><label class="label label-default" for="game_16_hteam_seed">Seed</label></h5>
+                                                <input name="game_16_hteam_seed" class="seed" type="hidden" value="4">
+                                                <input name="game_16_vteam_seed" class="seed" type="hidden" value="13">
+                                                <input id="game_16_hteam_seed" name="game_16_hteam_seed" class="seed" type="text" value="4" disabled>
+                                                <input id="game_16_hteam_name" name="game_16_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_16_vteam_seed" name="game_16_vteam_seed" class="seed" type="text" value="13" disabled>
+                                                <input id="game_16_vteam_name" name="game_16_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_17" class="game panel-body">
+                                                <h5><label class="label label-default" for="game_17_hteam_seed">Seed</label></h5>
+                                                <input name="game_17_hteam_seed" class="seed" type="hidden" value="6">
+                                                <input name="game_17_vteam_seed" class="seed" type="hidden" value="11">
+                                                <input id="game_17_hteam_seed" name="game_17_hteam_seed" class="seed" type="text" value="6" disabled>
+                                                <input id="game_17_hteam_name" name="game_17_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_17_vteam_seed" name="game_17_vteam_seed" class="seed" type="text" value="11" disabled>
+                                                <input id="game_17_vteam_name" name="game_17_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_18" class="right game panel-body">
+                                                <h5><label class="label label-default" for="game_18_hteam_seed">Seed</label></h5>
+                                                <input name="game_18_hteam_seed" class="seed" type="hidden" value="3">
+                                                <input name="game_18_vteam_seed" class="seed" type="hidden" value="14">
+                                                <input id="game_18_hteam_seed" name="game_18_hteam_seed" class="seed" type="text" value="3" disabled>
+                                                <input id="game_18_hteam_name" name="game_18_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_18_vteam_seed" name="game_18_vteam_seed" class="seed" type="text" value="14" disabled>
+                                                <input id="game_18_vteam_name" name="game_18_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_19" class="game panel-body">
+                                                <h5><label class="label label-default" for="game_19_hteam_seed">Seed</label></h5>
+                                                <input name="game_19_hteam_seed" class="seed" type="hidden" value="7">
+                                                <input name="game_19_vteam_seed" class="seed" type="hidden" value="10">
+                                                <input id="game_19_hteam_seed" name="game_19_hteam_seed" class="seed" type="text" value="7" disabled>
+                                                <input id="game_19_hteam_name" name="game_19_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_19_vteam_seed" name="game_19_vteam_seed" class="seed" type="text" value="10" disabled>
+                                                <input id="game_19_vteam_name" name="game_19_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_20" class="right game panel-body">
+                                                <h5><label class="label label-default" for="game_20_hteam_seed">Seed</label></h5>
+                                                <input name="game_20_hteam_seed" class="seed" type="hidden" value="2">
+                                                <input name="game_20_vteam_seed" class="seed" type="hidden" value="15">
+                                                <input id="game_20_hteam_seed" name="game_20_hteam_seed" class="seed" type="text" value="2" disabled>
+                                                <input id="game_20_hteam_name" name="game_20_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_20_vteam_seed" name="game_20_vteam_seed" class="seed" type="text" value="15" disabled>
+                                                <input id="game_20_vteam_name" name="game_20_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+					{% endif %}
+                                        </div>
+                                        <div>
+                                                <button class="btn btn-sm btn-info">Update</button>
+                                        </div>
+				</form>
+                        <div id="r64_r3_modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="site_info_label">
+                                <div class="modal-dialog modal-sm">
+                                        <div id="site_modal_content" class="modal-content">
+                                                <div class="modal-header">
+                                                        <h4 class="modal-title" id="site_info_label">Success</h4>
+                                                </div>
+                                                <div id="r3_body" class="modal-body">
+                                                        Congratulations!<br>
+                                                        All {%if regions %}{{regions.2.region_name}}{% else %}Region 3{% endif %} teams have been updated.
+                                                </div>
+                                                <div class="modal-footer">
+                                                        &nbsp;
+                                                        <button href="#region_4_dropdown_data" data-toggle="tab" type="button" class="btn btn-success center" data-dismiss="modal" aria-label="Close">Close <span aria-hidden="true">&times;</span></button>
+
+                                                </div>
+                                        </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+                                </div>
+                </div>
+                <div class="tab-pane fade" id="region_4_dropdown_data">
+                                <div class="round2">
+                                <form id="r64_region_4_form">
+                                        {% csrf_token %}
+                                        <input type="hidden" id="r64_r4_ff_game" name="r64_r4_ff_game" value="29" />
+                                        <input type="hidden" id="r64_r4_ff_team" name="r64_r4_ff_team" value="vteam" />
+                                        {% if site.0.bracket_setup == True %}
+                                        <div class="region region_{{r64.24.6}} panel panel-info">
+                                                <div class="panel-heading">
+                                                        <div class="panel-title" id="reagion_{{r64.24.6}}_team_title">{{r64.24.7}}</div>
+                                                </div>
+                                                {% for x in r64 %}
+                                                {% if x.6 == 4 %}
+                                                <div id="game_{{x.0}}" class="game panel-body">
+                                                        <h5><label class="label label-default" for="game_{{x.0}}_hteam_seed">Seed</label></h5>
+                                                        <input id="game_{{x.0}}_hteam_seed" name="game_{{x.0}}_hteam_seed" class="seed" type="text" value="{{x.1}}" disabled>
+                                                        {% if x.2 == 'Winner of First Four Game' %}
+                                                        <input id="game_{{x.0}}_hteam_name" name="game_{{x.0}}_hteam_name" type="text" value="{{x.2}}" placeholder="Home Team" disabled />
+                                                        {% else %}
+                                                        <input id="game_{{x.0}}_hteam_name" name="game_{{x.0}}_hteam_name" type="text" value="{{x.2}}" placeholder="Home Team" required />
+                                                        {% endif %}
+                                                        <input id="game_{{x.0}}_vteam_seed" name="game_{{x.0}}_vteam_seed" class="seed" type="text" value="{{x.3}}" disabled>
+                                                        {% if x.4 == 'Winner of First Four Game' %}
+                                                        <input id="game_{{x.0}}_vteam_name" name="game_{{x.0}}_vteam_name" type="text" value="{{x.4}}" placeholder="Away Team" disabled />
+                                                        {% else %}
+                                                        <input id="game_{{x.0}}_vteam_name" name="game_{{x.0}}_vteam_name" type="text" value="{{x.4}}" placeholder="Away Team" required />
+                                                        {% endif %}
+                                                 </div>
+                                                {% endif %}
+                                                {% endfor %}
+                                        {% else %}
+                                        {% if regions %}
+                                        <div class="region region_{{regions.1.id}} panel panel-info">
+                                                <div class="panel-heading">
+                                                        <div class="panel-title" id="region_{{regions.3.id}}_team_title">{{regions.3.region_name}}</div>
+                                                </div>
+                                        {% else %}
+                                        <div class="region region_4 panel panel-info">
+                                                <div class="panel-heading">
+                                                        <div class="panel-title" id="region_4_team_title">Region 333</div>
+                                                </div>
+                                        {% endif %}
+                                                <div id="game_29" class="game panel-body">
+                                                <h5><label class="label label-default" for="game_29_hteam_seed">Seed</label></h5>
+                                                <input name="game_29_hteam_seed" class="seed" type="hidden" value="1">
+                                                <input name="game_29_vteam_seed" class="seed" type="hidden" value="16">
+                                                <input id="game_29_hteam_seed" name="game_29_hteam_seed" class="seed" type="text" value="1" disabled>
+                                                <input id="game_29_hteam_name" name="game_29_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_29_vteam_seed" name="game_29_vteam_seed" class="seed" type="text" value="16" disabled>
+                                                <input id="game_29_vteam_name" name="game_29_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_30" class="right game panel-body">
+                                                <h5><label class="label label-default" for="game_30_hteam_seed">Seed</label></h5>
+                                                <input name="game_30_hteam_seed" class="seed" type="hidden" value="8">
+                                                <input name="game_30_vteam_seed" class="seed" type="hidden" value="9">
+                                                <input id="game_30_hteam_seed" name="game_30_hteam_seed" class="seed" type="text" value="8" disabled>
+                                                <input id="game_30_hteam_name" name="game_30_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_30_vteam_seed" name="game_30_vteam_seed" class="seed" type="text" value="9" disabled>
+                                                <input id="game_30_vteam_name" name="game_30_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_31" class="game panel-body">
+                                                <h5><label class="label label-default" for="game_31_hteam_seed">Seed</label></h5>
+                                                <input name="game_31_hteam_seed" class="seed" type="hidden" value="5">
+                                                <input name="game_31_vteam_seed" class="seed" type="hidden" value="12">
+                                                <input id="game_31_hteam_seed" name="game_31_hteam_seed" class="seed" type="text" value="5" disabled>
+                                                <input id="game_31_hteam_name" name="game_31_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_31_vteam_seed" name="game_31_vteam_seed" class="seed" type="text" value="12" disabled>
+                                                <input id="game_31_vteam_name" name="game_31_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_32" class="right game panel-body">
+                                                <h5><label class="label label-default" for="game_32_hteam_seed">Seed</label></h5>
+                                                <input name="game_32_hteam_seed" class="seed" type="hidden" value="4">
+                                                <input name="game_32_vteam_seed" class="seed" type="hidden" value="13">
+                                                <input id="game_32_hteam_seed" name="game_32_hteam_seed" class="seed" type="text" value="4" disabled>
+                                                <input id="game_32_hteam_name" name="game_32_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_32_vteam_seed" name="game_32_vteam_seed" class="seed" type="text" value="13" disabled>
+                                                <input id="game_32_vteam_name" name="game_32_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_33" class="game panel-body">
+                                                <h5><label class="label label-default" for="game_33_hteam_seed">Seed</label></h5>
+                                                <input name="game_33_hteam_seed" class="seed" type="hidden" value="6">
+                                                <input name="game_33_vteam_seed" class="seed" type="hidden" value="11">
+                                                <input id="game_33_hteam_seed" name="game_33_hteam_seed" class="seed" type="text" value="6" disabled>
+                                                <input id="game_33_hteam_name" name="game_33_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_33_vteam_seed" name="game_33_vteam_seed" class="seed" type="text" value="11" disabled>
+                                                <input id="game_33_vteam_name" name="game_33_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_34" class="right game panel-body">
+                                                <h5><label class="label label-default" for="game_34_hteam_seed">Seed</label></h5>
+                                                <input name="game_34_hteam_seed" class="seed" type="hidden" value="3">
+                                                <input name="game_34_vteam_seed" class="seed" type="hidden" value="14">
+                                                <input id="game_34_hteam_seed" name="game_34_hteam_seed" class="seed" type="text" value="3" disabled>
+                                                <input id="game_34_hteam_name" name="game_34_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_34_vteam_seed" name="game_34_vteam_seed" class="seed" type="text" value="14" disabled>
+                                                <input id="game_34_vteam_name" name="game_34_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_35" class="game panel-body">
+                                                <h5><label class="label label-default" for="game_35_hteam_seed">Seed</label></h5>
+                                                <input name="game_35_hteam_seed" class="seed" type="hidden" value="7">
+                                                <input name="game_35_vteam_seed" class="seed" type="hidden" value="10">
+                                                <input id="game_35_hteam_seed" name="game_35_hteam_seed" class="seed" type="text" value="7" disabled>
+                                                <input id="game_35_hteam_name" name="game_35_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_35_vteam_seed" name="game_35_vteam_seed" class="seed" type="text" value="10" disabled>
+                                                <input id="game_35_vteam_name" name="game_35_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+                                                <div id="game_36" class="right game panel-body">
+                                                <h5><label class="label label-default" for="game_36_hteam_seed">Seed</label></h5>
+                                                <input name="game_36_hteam_seed" class="seed" type="hidden" value="2">
+                                                <input name="game_36_vteam_seed" class="seed" type="hidden" value="15">
+                                                <input id="game_36_hteam_seed" name="game_36_hteam_seed" class="seed" type="text" value="2" disabled>
+                                                <input id="game_36_hteam_name" name="game_36_hteam_name" type="text" value="" placeholder="Home Team" required />
+                                                <input id="game_36_vteam_seed" name="game_36_vteam_seed" class="seed" type="text" value="15" disabled>
+                                                <input id="game_36_vteam_name" name="game_36_vteam_name" type="text" value="" placeholder="Away Team" required />
+                                                </div>
+					{% endif %}
+                                        </div>
+                                        <div>
+                                                <button class="btn btn-sm btn-info">Update</button>
+                                        </div>
+				</form>
+                        <div id="r64_r4_modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="site_info_label">
+                                <div class="modal-dialog modal-sm">
+                                        <div id="site_modal_content" class="modal-content">
+                                                <div class="modal-header">
+                                                        <h4 class="modal-title" id="site_info_label">Success</h4>
+                                                </div>
+                                                <div id="r4_body" class="modal-body">
+                                                        Congratulations!<br>
+                                                        All {%if regions %}{{regions.3.region_name}}{% else %}Region 4{% endif %} teams have been updated.
+                                                </div>
+                                                <div class="modal-footer">
+                                                        &nbsp;
+                                                        <button type="button" class="btn btn-success center" data-dismiss="modal" aria-label="Close">Close <span aria-hidden="true">&times;</span></button>
+
+                                                </div>
+                                        </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+
+                                </div>
+                </div>
+                <div class="tab-pane fade" id="rules">
+			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+				<div class="panel panel-info">
+					<div class="panel-heading" role="tab" id="headingOne">
+						<h4 class="panel-title">
+							<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Edit</a>
+						</h4>
+					</div>
+					<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+        		                        <div class="rules edit panel panel-info">
+                        		                <div class="panel-body">
+	                                        	        <form id="rules_edit_form">
+        	                                        	{% csrf_token %}
+	        	                                        <input type="hidden" name="rules_form" value="edit">
+	                	                                <label for="edit_title">Select Title:</label>
+        	                	                        <select id="edit_title" name="edit_title">
+                	                	                {% for x in rules %}
+                        	                	                <option value="{{x.id}}">{{x.title}}</option>
+                                	                	{% endfor %}
+	                                        	        </select>
+        	                                        	<label for="edit_title_name">Title: </label>
+	        	                                        <input type="text" id="edit_title_name" name="edit_title_name" value="{{rules.0.title}}" />
+        	        	                                <label for="edit_content">Content:</label>
+								<div id="edit_btn_group">
+<div class="aloha-ui btn-toolbar" role="toolbar">
+					<div class="btn-group">
+						<button type="button" id="aloha_edit_bold" class="aloha_btn aloha-action-bold btn" title="Bold"><b>B</b></button>
+						<button type="button" id="aloha_edit_italic" class="aloha_btn aloha-action-italic btn" title="Italic"><i>I</i></button>
+                                                <button type="button" id="aloha_edit_underline" class="aloha_btn aloha-action-underline btn" title="Underline"><u>U</u></button>
+						<button type="button" id="aloha_edit_remove" class="aloha_btn aloha-action-unformat btn glyphicon glyphicon-remove" title="Remove formatting"></button>
+						<button type="button" id="aloha_edit_oList" class="aloha_btn aloha-action-ol btn glyphicon glyphicon-list" title="Ordered List"></button>
+						<button type="button" id="aloha_edit_uList" class="aloha_btn aloha-action-ul btn glyphicon glyphicon-list" title="Unordered List"></button>
+					</div>
+					<div class="btn-group">
+						<button id="aloha_edit_heading" class="aloha_btn btn dropdown-toggle" data-toggle="dropdown">
+							Paragraph <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu rainbow-static" role="menu">
+							<li><a href="#" class="aloha-action-h1">Heading 1</a></li>
+							<li><a href="#" class="aloha-action-h2">Heading 2</a></li>
+							<li><a href="#" class="aloha-action-h3">Heading 3</a></li>
+							<li><a href="#" class="aloha-action-h4">Heading 4</a></li>
+							<li><a href="#" class="aloha-action-p">Paragraph</a></li>
+							<li><a href="#" class="aloha-action-pre">Preformatted</a></li>
+						</ul>
+					</div>
+				</div>									
+								</div>
+       	        	        	                        <div name="edit_content" id="edit_content" class="rules_content editable">{% autoescape off%}{{rules.0.content}}{% endautoescape %}</div>
+								<div class="rules_btn_container">
+								<button class="rules_btn btn btn-info">Submit</button>
+								</div>
+								</form>
+							</div>
+                        	                </div>
+					</div>
+				</div>
+				<div class="panel panel-success">
+					<div class="panel-heading" role="tab" id="headingTwo">
+						<h4 class="panel-title">
+							<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">New</a>
+						</h4>
+					</div>
+					<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+						<div class="rules panel-body">
+								<form id="rules_new_form" method="get" action="/site-admin">
+                                                                {% csrf_token %}
+                                                                <input type="hidden" name="rules_form" value="new">
+                                                                <label for="new_title_name">Title: </label>
+                                                                <input type="text" id="new_title_name" name="new_title_name" value="" placeholder="Rule Title" />
+                                                                <label for="new_content">Content:</label>
+                                                                <div id="new_btn_group">
+									<div class="aloha-ui btn-toolbar" role="toolbar">
+				                	                        <div class="btn-group">
+                                		        			<button type="button" id="aloha_new_bold" class="aloha_btn aloha-action-bold btn" title="Bold"><b>B</b></button>
+				                                                <button type="button" id="aloha_new_italic" class="aloha_btn aloha-action-italic btn" title="Italic"><i>I</i></button>
+                                				                <button type="button" id="aloha_new_underline" class="aloha_btn aloha-action-underline btn" title="Underline"><u>U</u></button>
+						                                <button type="button" id="aloha_new_remove" class="aloha_btn aloha-action-unformat btn glyphicon glyphicon-remove" title="Remove formatting"></button>
+										<button type="button" id="aloha_new_oList" class="aloha_btn aloha-action-ol btn glyphicon glyphicon-list" title="Ordered List"></button>
+				                                                <button type="button" id="aloha_new_uList" class="aloha_btn aloha-action-ul btn glyphicon glyphicon-list" title="Unordered List"></button>
+	                                				        </div>
+        					                                <div class="btn-group">
+                                                					<button id="aloha_new_heading" class="aloha_btn btn dropdown-toggle" data-toggle="dropdown">
+					                                                        Paragraph <span class="caret"></span>
+                                        					        </button>
+					                                                <ul class="dropdown-menu rainbow-static" role="menu">
+                                        					                <li><a href="#" class="aloha-action-h1">Heading 1</a></li>
+					                                                        <li><a href="#" class="aloha-action-h2">Heading 2</a></li>
+                                        					                <li><a href="#" class="aloha-action-h3">Heading 3</a></li>
+					                                                        <li><a href="#" class="aloha-action-h4">Heading 4</a></li>
+                                        					                <li><a href="#" class="aloha-action-p">Paragraph</a></li>
+					                                                        <li><a href="#" class="aloha-action-pre">Preformatted</a></li>
+                                        					        </ul>
+					                                        </div>
+					                                </div>
+                                                                </div>
+                                                                <div name="new_content" id="new_content" class="rules_content editable" placeholder="Rule Specifics" onClick="clearContent()">Rule Specifics</div>
+                                                                <div class="rules_btn_container">
+									<button class="rules_btn btn btn-success">Submit</button>
+								</div>
+								</form>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading" role="tab" id="headingThree">
+						<h4 class="panel-title">
+							 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">Delete</a>
+						</h4>
+					</div>
+					<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                                <div class="rules del panel panel-info">
+                                                        <div class="panel-body">
+                                                                <form id="rules_del_form">
+                                                                {% csrf_token %}
+                                                                <input type="hidden" name="rules_form" value="del">
+                                                                <label for="del_title">Select Title:</label>
+                                                                <select id="del_title" name="del_title">
+                                                                {% for x in rules %}
+                                                                        <option value="{{x.id}}">{{x.title}}</option>
+                                                                {% endfor %}
+                                                                </select>
+                                                                <label for="del_title_name">Title: </label>
+                                                                <input type="text" id="del_title_name" name="del_title_name" value="{{rules.0.title}}" disabled/>
+                                                                <label for="del_content">Content:</label>
+                                                                <div name="del_content" id="del_content" class="rules_content">{% autoescape off%}{{rules.0.content}}{% endautoescape %}</div>
+                                                                <div class="rules_btn_container">
+								<button type="button" onclick="ShowConfirmYesNo()" class="rules_btn btn btn-info">Delete</a>
+                                                                </div>
+								</form>
+                                                        </div>
+                                                </div>
+					</div>
+				</div>
+	                        <div id="rules_edit_modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="rules_edit_info_label">
+        	                        <div class="modal-dialog modal-sm">
+                	                        <div id="rules_edit_modal_content" class="modal-content">
+                        	                        <div class="modal-header">
+                                	                        <h4 class="modal-title" id="rules_edit_info_label">Success</h4>
+                                        	        </div>
+                                                	<div class="modal-body">
+                                                        	Congratulations!<br>
+	                                                        All fields have been updated.
+        	                                        </div>
+                	                                <div class="modal-footer">
+                        	                                &nbsp;
+                                	                        <button type="button" class="btn btn-success center" data-dismiss="modal" aria-label="Close">Close <span aria-hidden="true">&times;</span></button>
+	                                                </div>
+        	                                </div><!-- /.modal-content -->
+                	                </div><!-- /.modal-dialog -->
+                        	</div><!-- /.modal -->
+	                        <div id="rules_new_modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="rules_new_info_label">
+        	                        <div class="modal-dialog modal-sm">
+                	                        <div id="rules_new_modal_content" class="modal-content">
+                        	                        <div class="modal-header">
+                                	                        <h4 class="modal-title" id="rules_new_info_label">Success</h4>
+                                        	        </div>
+                                                	<div class="modal-body">
+                                                        	Congratulations!<br>
+	                                                        All fields have been updated.
+        	                                        </div>
+                	                                <div class="modal-footer">
+                        	                                &nbsp;
+                                	                        <button type="button" class="btn btn-success center" data-dismiss="modal" aria-label="Close">Close <span aria-hidden="true">&times;</span></button>
+	                                                </div>
+        	                                </div><!-- /.modal-content -->
+                	                </div><!-- /.modal-dialog -->
+                        	</div><!-- /.modal -->
+                                <div id="rules_del_modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="rules_new_info_label">
+                                        <div class="modal-dialog modal-sm">
+                                                <div id="rules_new_modal_content" class="modal-content">
+                                                        <div class="modal-header">
+                                                                <h4 class="modal-title" id="rules_new_info_label">Success</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                                Congratulations!<br>
+                                                                Rule has been deleted.
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                                &nbsp;
+                                                                <button type="button" class="btn btn-success center" data-dismiss="modal" aria-label="Close">Close <span aria-hidden="true">&times;</span></button>
+                                                        </div>
+                                                </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                </div><!-- /.modal -->
+			</div>
+                </div>
+                <div class="tab-pane fade" id="blog">
+                  <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater.</p>
+                </div>
+                <div class="tab-pane fade" id="email">
+                  <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater.</p>
+                </div>
+
+              </div>
+            </div>
+	</div>
+<div id="results"></div>
+	</section>
+</section>
+
+<div id="modalConfirmYesNo" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="lblTitleConfirmYesNo" class="modal-title">Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <p id="lblMsgConfirmYesNo"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="btnYesConfirmYesNo" 
+                type="button" class="btn btn-primary">Yes</button>
+                <button id="btnNoConfirmYesNo" 
+                type="button" class="btn btn-default">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

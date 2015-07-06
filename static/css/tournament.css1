@@ -1,0 +1,290 @@
+.tournament {      
+    background-color: #F0F0F0;  
+    border: dashed 1px solid;  
+    overflow: auto;  
+  }  
+.bracket1 {
+	width: 50%;
+	float: left;
+}
+
+.bracket3 {
+	float: right;
+	width: 50%;
+	text-align: right;
+
+}
+ 
+.round {  
+    background-color: #DFDFDF;  
+    min-width: 100px;      
+    vertical-align: top;  
+    float: left;  
+  }  
+    
+.match {  
+    background-color: #D0D0D0;  
+    border-top: 1px solid;  
+    border-right: 1px solid;  
+    border-bottom: 1px solid;    
+  }  
+.p1 {      
+    height: 20px;  
+  }  
+.p2 {  
+    height: 20px;  
+  }      
+.match_spacer {  
+    background-color: #DFDFDF;  
+    height: 38px;  
+  }  
+  .tournament .round .spacer {  
+    height: 80px;  
+  }  
+  .tournament .round .half-spacer {  
+    height: 40px;  
+  }  
+.small-spacer {  
+    height: 10px;  
+    background-color: #F1F1F1;  
+  }  
+  .tournament .round .winner {  
+    border-bottom: 1px solid;  
+  }  
+    
+  .left-line {  
+    border-left: 1px solid;  
+  }  
+    
+  .tournament .cell {  
+    min-width: 100px;  
+    height: 20px;  
+    float: left;  
+    background-color: #DFDFDF;      
+  }     
+  .tournament .l2 {  
+    background-color: #D0D0D0;  
+  }       
+  .tournament .lmax {  
+    width: 0px;  
+    clear: both;  
+  } 
+
+#MidWest h1 {
+	text-decoration: underline;
+	font-size: 30px;
+}
+#MidWest h2 {
+	font-size: 20px;
+	text-align: center;
+	margin-bottom: 0px;
+}
+#East {
+	float: right;
+}
+
+#East h1 {
+        text-decoration: underline;
+        font-size: 30px;
+}
+#East h2 {
+        font-size: 20px;
+        text-align: center;
+        margin-bottom: 0px;
+}
+
+.bracket3_round {
+	background-color: #DFDFDF;
+	min-width: 100px;
+	vertical-align: top;
+	float: right;
+}
+
+.bracket3_match {
+	float: right;
+	width: 100px;
+	background-color: #D0D0D0;
+	border-top: 1px solid;
+	border-left: 1px solid;
+	border-bottom: 1px solid;
+
+}
+
+#bracket3-spacer {
+	clear: both;
+}
+
+#round1_spacer {
+	height: 0px;
+}
+
+#round2_spacer {
+        height: 38px;
+        background-color: rgb(238,238,238);
+}
+
+#round3_spacer {
+        height: 88px;
+        background-color: rgb(238,238,238);
+
+}
+
+#round4_spacer {
+        height: 180px;
+        background-color: rgb(238,238,238);
+}
+
+#round5_spacer {
+        height: 0px;
+}
+
+#round1_match_spacer {
+    background-color: #DFDFDF;
+    height: 38px;
+  }
+
+#round2_match_spacer {
+    background-color: #DFDFDF;
+    height: 50px;
+  }
+
+#round3_match_spacer {
+    height: 140px;
+    background-color: #DFDFDF;
+  }
+
+#round4_match_spacer {
+    height: 320px;
+    background-color: #DFDFDF;
+}
+
+#round5_match_spacer {
+    height: 38px;
+  }
+
+#round1_small-spacer {
+    height: 10px;
+    background-color: #F1F1F1;
+	clear: both;
+}
+
+#round2_small-spacer {
+	height: 88px;
+	background-color: rgb(238,238,238);
+	clear: both;
+}
+
+#round3_small-spacer {
+    height: 180px;
+    background-color: #F1F1F1;
+        clear: both;
+}
+
+#round4_small-spacer {
+    height: 10px;
+    background-color: #F1F1F1;
+        clear: both;
+}
+
+#round5_small-spacer {
+    height: 10px;
+    background-color: #F1F1F1;
+}
+
+
+select {
+	font-size: 10px;
+}
+
+#round1_game_select select{
+	background: transparent;
+	width: 100px;
+	height: 80px;
+	overflow: hidden;
+	border-top: 1px solid;
+	border-bottom: 1px solid;
+	border-right: 1px solid;
+	text-align: center;
+	-webkit-appearance: none;
+   }
+
+#round2_game_select select{
+        background: transparent;
+        width: 100px;
+        height: 92px;
+        overflow: hidden;
+        border-top: 1px solid;
+        border-bottom: 1px solid;
+        border-right: 1px solid;
+        text-align: center;
+        -webkit-appearance: none;
+   }
+
+#round3_game_select select{
+        background: transparent;
+        width: 100px;
+        height: 182px;
+        overflow: hidden;
+        border-top: 1px solid;
+        border-bottom: 1px solid;
+        border-right: 1px solid;
+        text-align: center;
+        -webkit-appearance: none;
+   }
+
+#round4_game_select select{
+        background: transparent;
+        width: 100px;
+        height: 362px;
+        overflow: hidden;
+        border-top: 1px solid;
+        border-bottom: 1px solid;
+        border-right: 1px solid;
+        text-align: center;
+        -webkit-appearance: none;
+   }
+
+
+#round5_game_select select{
+        background: transparent;
+        width: 100px;
+        height: 60px;
+        overflow: hidden;
+        border-top: 1px solid;
+        border-bottom: 1px solid;
+        border-right: 1px solid;
+        text-align: center;
+        -webkit-appearance: none;
+   }
+
+#round1_game_select #hteam {
+	margin-bottom: 52px;
+	background-color: rgb(208,208,208);
+}
+
+#round2_game_select #hteam {
+	margin-bottom:62px;
+	background-color: rgb(208,208,208);
+}
+
+
+#round3_game_select #hteam {
+        margin-bottom: 152px;
+        background-color: rgb(208,208,208);
+}
+
+#round4_game_select #hteam {
+        margin-bottom: 332px;
+        background-color: rgb(208,208,208);
+}
+
+#round5_game_select #hteam {
+        margin-bottom:62px;
+        background-color: rgb(208,208,208);
+}
+
+#vteam {
+	text-align: bottom;
+        background-color: rgb(208,208,208);
+
+}

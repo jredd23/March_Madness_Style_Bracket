@@ -1,0 +1,38 @@
+.error {
+	background-color: yellow;
+}
+
+.form_label {
+	width: 25%;
+	clear: left;
+	float: left;
+}
+
+.data {
+	float: left;
+}
+
+.left {
+	clear: both;
+	width: 50%;
+	float: left;
+}
+
+.right {
+	width: 50%;
+	float: right;
+}
+
+#contact_form {
+	height: 500px;
+}
+
+.center {
+	clear: both;
+}
+
+.center button {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+}

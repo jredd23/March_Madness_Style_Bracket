@@ -1,0 +1,66 @@
+{% extends 'march_madness/base.html' %}
+{% block title %}Register{% endblock %}
+{% block site_title %}{{site.0.name}}{% endblock %}
+{% block nav %}home{% endblock %}
+{% block css %}
+        <link href="/static/css/register.css" rel="stylesheet" type="text/css"/>{% endblock %}
+{% block admin %}
+        {% if admin == 1%}
+        <li id="nav_admin"><a href="/site-admin" title="Admin">Admin</a></li>
+        {% endif %}{% endblock %}
+{% block content %}
+<section class="container theme-showcase" id="index" role="main">
+        <section class="jumbotron">
+		<section class="panel panel-info" id="registration_form">
+			<section class="panel-heading">
+				<h3 class="panel-title">Registration Form<br>&nbsp</h3>
+			</section>
+			<section class="panel-body">
+				<form action='/register' method='post' id="register">{% csrf_token %}
+					{% for field in form %}
+					    {% if field.is_hidden %}
+					        {{ field }}
+					    {% else %}
+				        	<section class="clearfix form-item {% if field.errors %}error{% endif %}">
+					            <label for="id_{{ field.name }}">
+				                {{ field.label }}: {% if field.field.required %}<span class="required">*</span>{% endif %}
+					            </label>
+					        {{ field }}
+	
+			                	    {% if field.errors %}
+                			        	<section class="help">
+				                            {% for error in field.errors %}
+        	        			                <p class="help-inline">{{ error|escape }}</p>
+			                	            {% endfor %}
+                			        	</section>
+			                	    {% endif %}
+	
+        	        			</section>
+					    {% endif %}
+					{% endfor %}
+
+				<button class="btn btn-lg btn-info btn-block" type="submit">Register</button>
+				</form>	
+			</section>
+		</section>
+		<section id="spacer"></section>
+		<section class="panel panel-success" id="login_form">
+			<section class="panel-heading" id="login_head">
+				<h3 class="panel-title">Already Registered?<br>Login Here.</h3>
+        		</section>
+	                <section class="panel-body">
+                                <form action="/admin/login/" method="post" id="login-form">
+                                {% csrf_token %}
+                                                <input type="hidden" name="next" value="/create/" />
+                                                <label for="id_username" class="required sr-only">Username:</label> <input class="form-control" id="id_username" maxlength="254" name="username" type="text" placeholder="Username" required autofocus/>
+                                                <label for="id_password" class="required sr-only">Password:</label> <input class="form-control" id="id_password" name="password" type="password" placeholder="Password" required/>
+                                                <input type="hidden" name="next" value="/" />
+                                                <button class="btn btn-lg btn-success btn-block" type="submit">Login</button>
+				</form>
+			</section>
+
+
+		</section>
+	</section>
+</section>
+{% endblock %}

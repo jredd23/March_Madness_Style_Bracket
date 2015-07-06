@@ -1,0 +1,41 @@
+.errorlist {
+	list-style-type: none;
+	display: inline;
+	float: right;
+}
+
+.jumbotron {
+	min-height: 390px;
+}
+
+#registration_form {
+	width: 49%;
+	float: left;
+	text-align: center;
+	margin-top: 20px;
+}
+label {
+	float: left;
+	padding-left: 50px;
+}
+#registration_form input {
+	float: right;
+	margin-right: 50px;
+	border-radius: 4px;
+	margin-top: -1px;
+}
+button {
+	margin-top: 10px;
+}
+
+#spacer {
+	width: 2%;
+	float: left;
+	background-color: #000;
+}
+#login_form {
+	width: 49%;
+	float: right;
+	text-align: center;
+	margin-top: 20px;
+}

@@ -1,0 +1,482 @@
+header, section, footer, aside, nav, article, figure, figcaption {
+	display: block;
+}
+
+input {
+        width: 125px;
+        height: 30px;
+        background-color: rgb(208, 208, 208);
+	    border: 1px solid rgb(178, 178, 178);
+        color: #000;
+        text-align: center;
+		
+
+}
+
+.jumbotron {
+	min-width: 1600px;
+	;
+}
+
+#index {
+	min-width: 1650px;
+}
+
+form {
+	position: relative;
+	top: 35px;
+	left: 25px;
+	width: 1450px;
+	height: 1550px;
+}
+
+.hteam {
+	width: 120px;
+	background-color: rgb(208,208,208);
+	float: left;
+	font-size: .78em;
+}
+
+.vteam {
+        width: 120px;
+	min-height: 22px;
+	background-color: rgb(208,208,208);
+	clear: left;
+	float: left;
+	font-size: .78em;
+}
+
+#region1 section {
+        border-left: none;
+}
+
+#region2 section {
+        border-right: none;
+}
+#region3 section {
+        border-left: none;
+}
+#region4 section {
+        border-right: none;
+}
+
+#first_four {
+	position: absolute;
+	width: 475px;
+	top: 65px;
+	left: 488px;
+	z-index: 5;
+}
+
+#first_four .hteam {
+	min-height: 20px;
+	margin-bottom: 30px;
+
+}
+
+#center {
+	text-align: center;
+}
+
+.round1 section{
+	width: 125px;
+	height: 81px;
+	margin-bottom: 10px;
+	border: 1px solid rgb(178,178,178);
+}
+
+.round1 .hteam {
+	min-height: 20px;
+	margin-bottom: 35px;
+}
+
+
+.round1 #region1 {
+        position: absolute;
+        top: 25px;
+        left: 25px;
+}
+
+.round1 #region2 {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+}
+
+.round1 #region3 {
+        position: absolute;
+        top: 760px;
+        left: 25px;
+}
+
+.round1 #region4 {
+        position: absolute;
+        top: 760px;
+        right: 25px;
+}
+
+.round2 section{
+        width: 125px;
+        height: 95px;
+        margin-bottom: 86px;
+        border: 1px solid rgb(178,178,178);
+}
+
+.round2 .hteam {
+        min-height: 20px;
+        margin-bottom: 49px;
+}
+
+
+.round2 #region1 {
+        position: absolute;
+        top: 63px;
+	left: 150px;
+}
+
+
+.round2 #region2 {
+        position: absolute;
+        top: 63px;
+        right: 150px;
+}
+
+.round2 #region3 {
+        position: absolute;
+        top: 798px;
+        left: 150px;
+}
+
+.round2 #region4 {
+        position: absolute;
+        top: 798px;
+        right: 150px;
+}
+
+.round3 section{
+        width: 125px;
+        height: 185px;
+        margin-bottom: 175px;
+        border: 1px solid rgb(178,178,178);
+}
+
+.round3 .hteam {
+        min-height: 20px;
+        margin-bottom: 139px;
+}
+
+
+.round3 #region1 {
+        position: absolute;
+        top: 113px;
+        left: 275px;
+}
+
+
+.round3 #region2 {
+        position: absolute;
+        top: 113px;
+        right: 275px;
+}
+
+.round3 #region3 {
+        position: absolute;
+        top: 848px;
+        left: 275px;
+}
+
+.round3 #region4 {
+        position: absolute;
+        top: 848px;
+        right: 275px;
+}
+
+.round4 section{
+        width: 125px;
+        height: 365px;
+        margin-bottom: 360px;
+        border: 1px solid rgb(178,178,178);
+}
+
+.round4 .hteam {
+        min-height: 20px;
+        margin-bottom: 319px;
+}
+
+
+.round4 #region1 {
+        position: absolute;
+        top: 205px;
+        left: 400px;
+}
+
+
+.round4 #region2 {
+        position: absolute;
+        top: 205px;
+        right: 400px;
+}
+
+.round4 #region3 {
+        position: absolute;
+        top: 940px;
+        left: 400px;
+}
+
+.round4 #region4 {
+        position: absolute;
+        top: 940px;
+        right: 400px;
+	width: 125px;
+}
+
+.round5 section{
+        width: 125px;
+        height: 745px;
+        border: 1px solid rgb(178,178,178);
+}
+
+.round5 .hteam {
+        min-height: 20px;
+        margin-bottom: 699px;
+}
+
+
+.round5 #region1 {
+        position: absolute;
+        top: 385px;
+        left: 525px;
+}
+
+
+.round5 #region2 {
+        position: absolute;
+        top: 385px;
+        right: 525px;
+}
+
+
+.round6 .region1 {
+        position: absolute;
+        top: 385px;
+        left: 650px;
+}
+.round6 section {
+	width: 150px;
+	height: 745px;
+}
+
+.round6 .hteam {
+        min-height: 20px;
+	position: absolute;
+        top: 100px;
+        left: 0px;
+	border-left: none;
+}
+
+.round6 #game67_vteam {
+        position: absolute;
+        bottom: 100px;
+        right: 0px;
+	border-right: none;
+}
+
+.champ {
+ 	min-height: 20px;
+	position: absolute;
+        top: 50%;
+        left: 50%;
+	width: 125px;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+	font-size: medium;
+}
+
+#first_four_img {
+	position: absolute;
+	top: 77px;
+	left: 450px;
+}
+
+#round_labels1_img {
+	position: absolute;
+	top: -20px;
+	left: 35px;
+}
+
+#round_labels2_img {
+        position: absolute;
+        top: 1500px;
+        left: 35px;
+}
+
+#region_1_label {
+	position: absolute;
+	top: 350px;
+	left: 250px;
+}
+
+#region_2_label {
+        position: absolute;
+        top: 350px;
+        right: 250px;
+}
+#region_3_label {
+        position: absolute;
+        bottom: 410px;
+        left: 250px;
+}
+#region_4_label {
+        position: absolute;
+        bottom: 410px;
+        right: 250px;
+}
+
+.submit {
+	position: absolute;
+	bottom: 200px;
+	left: 575px;
+	width: 300px;
+	height: 130px;
+	background-image: linear-gradient(rgb(92,184,92) 0px, rgb(65,150,65) 100%);
+	font-size: 14px;
+	font-weight: bold;
+	color: #FFF;
+}
+
+.bracket_name {
+	margin: 10px 0px 0px 10px;
+}
+
+#bracket_name {
+	width: 157px;
+}
+
+.text_box {
+        background-color: rgba(208,208,208,.5);
+	border: none;
+}
+
+#tie_label {
+	float: left;
+	padding-left: 10px;
+	padding-right: 40px;
+}
+
+#tiebreak_range {
+	width: 100px;
+	float: left;
+}
+
+#tiebreak_val {
+	width: 30px;
+	float: right;
+	margin-right: 20px;
+}
+
+#submit_btn {
+	clear: both;
+	display: block;
+	margin-top: 50px;
+	margin-left: auto;
+	margin-right: auto;
+}
+#region_1_ff_label {
+	position: absolute;
+	left: 488px;
+	top: 95px;
+	font-weight: bold;
+	width: 115px;
+	text-align: center;
+}
+
+#game1 {
+        position: absolute;
+        left: 0px;
+	top: 0px;
+}
+#game2 {
+	position: absolute;
+	left: 125px;
+	top: 0px;
+}
+#game3 {
+        position: absolute;
+        left: 250px;
+        top: 0px;
+}
+#game4 {
+        position: absolute;
+        left: 375px;
+        top: 0px;
+}
+
+#region_2_ff_label {
+        position: absolute;
+        left: 613px;
+        top: 95px;
+        font-weight: bold;
+        width: 115px;
+        text-align: center;
+}
+
+#region_3_ff_label {
+        position: absolute;
+        left: 738px;
+        top: 95px;
+        font-weight: bold;
+        width: 115px;
+        text-align: center;
+}
+
+#region_4_ff_label {
+        position: absolute;
+        left: 863px;
+        top: 95px;
+        font-weight: bold;
+        width: 115px;
+        text-align: center;
+}
+
+#first_four_label {
+	position: absolute;
+	top: 127px;
+	left: 488px;
+	font-style: italic;
+	width: 490px;
+	text-align: center;
+}
+
+.selected {
+        background-color: rgb(23,208,23);
+}
+.error {
+	position: relative;
+	background-color: #d9534f;
+}
+.error_text {
+        font-size: medium;
+	font-weight: bold;
+        text-align: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+}
+#first_four .error_text {
+	font-size: xx-small;
+}
+
+.round1 .error_text {
+	font-size: xx-small;
+}
+
+.round2 .error_text {
+	font-size: x-small;
+}	
+
+.round3 .error_text {
+	font-size: small;
+}
+

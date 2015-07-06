@@ -1,0 +1,34 @@
+{% extends 'march_madness/base.html' %}
+{% block title %}March Madness{% endblock %}
+{% block site_title %}{{site.0.name}}{% endblock %}
+{% block nav %}bracket{% endblock %}
+{% block css %}
+        <link href="/static/css/mm_style.css" rel="stylesheet" type="text/css"/>{% endblock %}
+{% block admin %}
+        {% if admin == 1%}
+        <li id="nav_admin"><a href="/site-admin" title="Admin">Admin</a></li>
+        {% endif %}{% endblock %}
+{% block content %}
+<section class="container theme-showcase" id="index" role="main">
+        <section class="jumbotron">
+		{% if id == "submit" %}
+			<section id="success_text">
+				<h3>Congratulations, {{ request.user.first_name }}<h3>
+				<h4>You have successfully submitted your bracket named: {{ bracket_name }}</h4>
+				<h4>You will receive an email with a pdf copy of your bracket.</h4>
+			</section>
+		{% else %}
+			<section id="success_edit">
+				<h3>Success!</h3>
+				<h4>You're bracket: {{ bracket_name }} has been updated.<br>You will receive an email with a pdf copy of your bracket</h4>
+			</section>
+		{% endif %}
+		<section id="success_buttons">
+			<button onClick="window.open( '/media/{{ pdf_link}}', '_blank');" type="button" class="btn btn-sm btn-primary" id="printout">Print<br>{{ bracket_name }}<br>Bracket</button>
+			<button onClick="window.location = '/create/';" type="button" class="btn btn-sm btn-primary" id="create_bracket">Create<br>Another<br>Bracket</button>
+			<button onClick="window.location = '/edit?id={{bracket_id}}';" type="button" class="btn btn-sm btn-primary" id="edit_bracket">Edit<br>This<br>Bracket</button>
+		
+		</section>
+	</section>
+</section>
+{% endblock %}

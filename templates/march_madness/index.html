@@ -1,0 +1,166 @@
+{% extends 'march_madness/base.html' %}
+{% block title %}March Madness{% endblock %}
+{% block site_title %}{{site.0.name}}{% endblock %}
+{% block nav %}home{% endblock %}
+{% block css %}
+	<link href="/static/css/mm_style.css" rel="stylesheet" type="text/css"/>{% endblock %}
+{% block admin %}
+        {% if admin == 1%}
+        <li id="nav_admin"><a href="/site-admin" title="Admin">Admin</a></li>
+        {% endif %}{% endblock %}
+{% block content %}
+<section class="container theme-showcase" id="index" role="main">
+	<section class="jumbotron">
+		<section class="ubs_rss">
+			<table id="ubs_rss">
+			<tr>
+			<td><h3>Latest NCAA News</h3></td>
+			<td><iframe src="http://s1.rsspump.com/rss.aspx?s=3b0e1677-7223-4e52-ae7d-12c54b3229d9&amp;speed=1&amp;t=0&amp;d=0&amp;u=0&amp;p=1&amp;b=0&amp;ic=9&amp;font=Arial Black&amp;fontsize=11px&amp;color=000&amp;type=fade" scrolling="no" seamless></iframe></td>
+			</tr>
+			</table>
+		</section>
+		{% if smacktalk == 0 %}
+		<section class="smacktalk panel panel-success" style="display:none">
+			<section class="panel-heading">
+				<h3 class="panel-title">Smacktalk</h3>
+			</section>
+			<section class="panel-body">
+			</section>
+		</section>
+		{% else %}
+                <section class="smacktalk panel panel-success">
+                        <section class="panel-heading">
+                                <h3 class="panel-title">Smacktalk</h3>
+                        </section>
+                        <section class="panel-body">
+			{% for x in smacktalk %}
+				<section class="smacktalk_title">
+					<h5>{{x.user_name}}</h5>
+				</section>
+				<section class="smacktalk_body">
+					<p>{{x.smack}}</p>
+				</section>
+			{% endfor %}
+                        </section>
+		</section>
+		{% endif %}
+		<section class="blog panel panel-info">
+			{% for x in blogs %}
+			<section class="panel-heading">
+				<h3 class="panel-title">{{x.title}}</h3>
+				<h4 id="subtitle" class="panel-title">{{x.subtitle}}</h4>
+			</section>
+			<section class="panel-body">
+				<p>{{x.content}}</p>
+			</section>
+			{% endfor %}
+		</section>
+		<section class="login panel panel-primary">
+			{% if user.is_authenticated %}
+				<section class="panel-heading">
+				<h3 class="panel-title">Welcome, {{user.first_name}}</h3>
+				</section>
+                                <section class="bracket_status panel-body">
+				{% if brackets %}
+                                	<section class="labels">
+                                                	<h4 class="bracket_name">Bracket Name</h4>
+							<h4 class="points">Points</h4>
+							<h4 class="place">Place</h4>
+							<h4 class="actions">Actions</h4>
+					</section>
+					{% for x in brackets %}
+							<label class="bracket_name">{{x.name}}</label>
+							<label class="points">{{x.total_score}}</label>
+							<label class="place">{{x.rank}}</label>
+						<section class="actions btn-group">
+							<section class"actions">
+                                                        <a id="bracket_action" class="btn btn-xs btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions&nbsp;&nbsp;<span class="caret"></span></a>
+								<ul class="dropdown-menu">
+									<li><a href="/media/{{x.id}}_{{user.username}}_{{x.name}}.pdf" target="_blank">Print</a></li>
+						                	<li><a href="/edit?id={{x.id}}" >Edit</a></li>
+								</ul>
+							</section>
+						</section>
+					{% endfor %}
+				{% endif %}
+                                <button onclick="window.location = '/logout';" type="button" class="btn btn-sm btn-primary" id="logout">Logout</button>
+				</section>
+			{% else %}
+                                <section class="panel-heading">
+					<h3 class="panel-title">Login</h3>
+				</section>
+				<section class="panel-body">
+					<form class="form-signin" action="/admin/login/" method="post" id="login-form">
+					{% csrf_token %}  
+						<label for="id_username" class="required sr-only">Username:</label> <input class="form-control" id="id_username" maxlength="254" name="username" type="text" placeholder="Username" required autofocus/>
+						<label for="id_password" class="required sr-only">Password:</label> <input class="form-control" id="id_password" name="password" type="password" placeholder="Password" required/>
+						<input type="hidden" name="next" value="/" />
+						<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>	
+				</form>
+				</section>
+			{% endif %}
+		</section>
+		<section class="standings panel panel-danger">
+			<section class="panel-heading">
+				<h3 class="panel-title">Standings</h3>
+			</section>
+			<section class="panel-body">
+			<table>
+                                <tr>
+					<th>Bracket Name</th>
+                                        <th>Points</th>
+                                        <th>Place</th>
+				</tr>
+			{% for x in standings %}
+				<tr>
+                                	<td class="bracket_name">{{x.0}}</td>
+                                        <td>{{x.1}}</td>
+					<td>{{x.2}}</td>
+				</tr>
+			{% endfor %}
+			</table>
+			</section>
+		</section>
+		<section class="stats standings panel panel-warning">
+			<section class="panel-heading">
+				<h3 class="panel-title">Stats</h3>
+			</section>
+			<section class="panel-body">
+			<table>
+				<tr>
+					<th></th>
+					<th>Total</th>
+				</tr>
+				<tr>
+					<td class="bracket_name">Players</td>
+					<td>{{users}}</td>
+				</tr>
+				<tr>
+					<td class="bracket_name">Brackets</td>
+					<td>{{total_brackets}}</td>
+				</tr>
+			</table>
+			</section>
+			<section class="panel-heading">
+                                <h3 class="panel-title">Picked to Win it all</h3>
+			</section>
+			<section class="panel-body">
+			<table>
+				<tr>
+					<th>Team</th>
+					<th>Percent Picked</th>
+				</tr>
+			{% for x in stats %}
+				<tr>
+					<td class="bracket_name">{{x.0}}</td>
+					<td>{{x.1}}&#37;</td>
+				</tr>
+			{% endfor %}
+			</table>
+			</section>
+		</section>
+	</section>
+</section>
+
+
+{% endblock %}

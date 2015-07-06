@@ -1,0 +1,335 @@
+.form-item {
+	position: relative;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.site_form label {
+	float: left;
+	width: 50%;
+	padding-bottom: 5px;
+}
+
+input {
+	float: right;
+	width: 50%;
+	padding-left: 5px;
+}
+
+input[type="checkbox"] {
+	position: absolute;
+	left: 75%;
+	transform: translate(-50%, 0);
+	height: 20px;
+}
+button {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, 0);
+}
+
+.site_form {
+	margin-top: 10px;
+}
+
+.region_data {
+	width: 60%;
+	float: right;
+        position: relative;
+	height: 190px;
+	margin-top: 10px;
+}
+.site_form {
+	float: left;
+	width: 35%;
+}
+#site_info {
+        height: 190px;
+	width: 100%;
+}
+.region_1_3 label {
+	float: left;
+	clear: both;
+	margin-top: 5px;
+}
+.region_1_3 {
+	border-right: 1px solid black;
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+	width: 25%;
+	height: 100px;
+        position: absolute;
+        top: 50%;
+        transform: translate(0, -50%);
+}
+.region_2_4 label {
+        float: right;
+        clear: both;
+        margin-top: 5px;
+}
+.region_2_4 {
+        border-left: 1px solid black;
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+        width: 25%;
+        height: 100px;
+        position: absolute;
+        top: 50%;
+        transform: translate(0, -50%);
+	right: 0px;
+}
+
+.winner_1 {
+        border-bottom: 1px solid black;
+	width: 22%;
+	position: absolute;
+	left: 25%;
+	top:  35%;
+	transform: translate(0, -50%);
+	text-align: center;
+}
+
+.winner_2 {
+        border-top: 1px solid black;
+	width: 28%;
+	position: absolute;
+	right: 25%;
+	top: 65%;
+	transform: translate(0,-50%);
+	text-align: center;
+
+}
+
+.first_four {
+	height: 380px;
+}
+.first_four .panel {
+        background-color: transparent;
+}
+.disabled {
+	background-color: lightgrey;
+}
+
+.first_four .region_1 {
+	float: left;
+	width: 50%;
+}
+.first_four .region_2 {
+        float: right;
+        width: 50%;
+}
+.first_four .region_3 {
+        float: left;
+        width: 50%;
+}
+.first_four .region_4 {
+        float: right;
+        width: 50%;
+}
+
+.first_four input {
+	float: left;
+	margin-left: 20px;
+	border-radius: 4px;
+	margin-bottom: 2px;
+}
+.first_four_title {
+	margin-bottom: 0px;
+}
+.region {
+        margin-bottom: 0px;
+}
+
+.first_four select {
+	clear: left;
+	float: left;
+}
+.first_four button {
+	position: relative;
+	bottom: -10px;
+}
+
+.round2 input {
+        float: left;
+        border-radius: 4px;
+        margin-bottom: 2px;
+	width: 60%;
+}
+.round2 .seed {
+	width: 8%;
+	margin-right: 20px;
+	clear: left;
+	text-align: center;
+}
+.round2 .panel {
+	background-color: transparent;
+	height: 550px;
+}
+.round2 .game {
+	width: 50%;
+	float: left;
+}
+.round2 .right {
+	float: right;
+}
+.modal-title {
+	text-align: center;
+}
+
+.modal-dialog {
+	z-index: 1000000;
+}
+.modal-footer {
+	position: relative;
+}
+#site_modal_content {
+	position: absolute;
+	top: 100px;
+}
+.center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+}
+
+.rules textarea {
+	width: 985px;
+	height: 322px;
+}
+.rules form {
+	height: 505px;
+}
+
+.rules_btn {
+	margin-top: 45px;
+	position: absolute;
+}
+.rules_btn_container {
+	position: relative;
+	bottom: -405px;
+}
+.rules label {
+	clear: left;
+	float: left;
+	width: 25%;
+}
+.rules input {
+	width: 30%;
+	float: left;
+}
+
+.rules_content {
+	float: left;
+	clear: left;
+	border: 1px inset rgb(238,238,238);
+	padding-left: 5px;
+	height: 350px;
+	width: 100%;
+	overflow-y: scroll;
+}
+#btnYesConfirmYesNo {
+	margin-left: -50px;
+	margin-top: -15px;
+}
+#modalConfirmYesNo .modal-footer {
+	height: 50px;
+}
+#btnNoConfirmYesNo {
+	margin-left: 20px;
+	margin-top: -15px;
+}
+#edit_btn_group {
+	float: left;
+	clear: left;
+}
+#aloha_edit_bold {
+	position:relative;
+	left: 23px;
+        width: 46px;
+}
+#aloha_edit_italic {
+        position:relative;
+        left: 23px;
+        width: 46px;
+}
+#aloha_edit_underline {
+        position:relative;
+        left: 23px;
+        width: 46px;
+}
+#aloha_edit_remove {
+        position:relative;
+        left: 23px;
+	top: 0px;
+        width: 46px;
+}
+
+#aloha_edit_oList {
+        position:relative;
+        left: 23px;
+        top: 0px;
+        width: 46px;
+}
+
+#aloha_edit_uList {
+        position:relative;
+        left: 23px;
+        top: 0px;
+        width: 46px;
+}
+
+#aloha_edit_heading {
+	position: relative;
+	left:44px;
+	width: auto;
+}
+#new_btn_group {
+        float: left;
+        clear: left;
+}
+#aloha_new_bold {
+        position:relative;
+        left: 23px;
+        width: 46px;
+}
+#aloha_new_italic {
+        position:relative;
+        left: 23px;
+        width: 46px;
+}
+#aloha_new_underline {
+        position:relative;
+        left: 23px;
+        width: 46px;
+}
+#aloha_new_remove {
+        position:relative;
+        left: 23px;
+        top: 0px;
+        width: 46px;
+}
+
+#aloha_new_oList {
+        position:relative;
+        left: 23px;
+        top: 0px;
+        width: 46px;
+}
+
+#aloha_new_uList {
+        position:relative;
+        left: 23px;
+        top: 0px;
+        width: 46px;
+}
+
+#aloha_new_heading {
+        position: relative;
+        left:44px;
+        width: auto;
+}
+#del_content {
+	margin-top: 38px;
+}

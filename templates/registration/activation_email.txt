@@ -1,0 +1,7 @@
+{% load i18n %}
+{% trans "Activate account at" %} {{ site.name }}:
+
+http://life.unifiedgroup.com
+
+{% blocktrans %}Link is valid for {{ expiration_days }} days.{% endblocktrans %}
+

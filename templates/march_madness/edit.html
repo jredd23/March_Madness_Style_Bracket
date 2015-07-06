@@ -1,0 +1,557 @@
+{% extends 'march_madness/base.html' %}
+{% block title %}March Madness{% endblock %}
+{% block site_title %}{{site.0.name}}{% endblock %}
+{% block nav %}bracket{% endblock %}
+{% block css %}
+        <link href="/static/css/bracket.css" rel="stylesheet" type="text/css"/>{% endblock %}
+{% block admin %}
+        {% if admin == 1%}
+        <li id="nav_admin"><a href="/site-admin" title="Admin">Admin</a></li>
+        {% endif %}{% endblock %}
+{% block content %}
+<section class="container theme-showcase" id="index" role="main">
+        <section class="jumbotron">
+{% if auth == 0 %}
+<form name="create" action="/edit/" method ="post" id="create" onsubmit="return validateForm()"> {% csrf_token %}
+<input type="hidden" name="id" value="{{bracket.id}}" />
+<div id="first_four">
+<div id="center">
+{% for x in first_four %}
+	<section id="game{{ x.0 }}">
+		<input type="hidden" id="game{{x.0}}_hteam_val" value="{{x.3}}">
+		<input type="hidden" id="game{{x.0}}_vteam_val" value="{{x.5}}">
+                {% if x.9 == 'hteam' %}	
+	                <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.3}}">
+			<button type="button" id="game{{x.0}}_hteam" class="selected hteam" value="{{x.7}} {{x.4}}" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+	                <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% elif x.9 == 'vteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.5}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="selected vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+		{% else %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+		{% endif %}
+	</section>
+{% endfor %}
+</div>
+</div>
+<div class="round1">
+<div id="region1">
+{% for x in round1_region1 %}
+        <section id="game{{ x.0 }}">
+                <input type="hidden" id="game{{x.0}}_hteam_val" value="{{x.3}}">
+                <input type="hidden" id="game{{x.0}}_vteam_val" value="{{x.5}}">
+                {% if x.9 == 'hteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.3}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="selected hteam" value="{{x.7}} {{x.4}}" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+			<label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% elif x.9 == 'vteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.5}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="selected vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% else %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% endif %}
+        </section>
+{% endfor %}
+</div>
+<div id="region2">
+{% for x in round1_region2 %}
+        <section id="game{{ x.0 }}">
+                <input type="hidden" id="game{{x.0}}_hteam_val" value="{{x.3}}">
+                <input type="hidden" id="game{{x.0}}_vteam_val" value="{{x.5}}">
+                {% if x.9 == 'hteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.3}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="selected hteam" value="{{x.7}} {{x.4}}" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% elif x.9 == 'vteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.5}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="selected vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% else %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% endif %}
+        </section>
+{% endfor %}
+</div>
+<div id="region3">
+{% for x in round1_region3 %}
+        <section id="game{{ x.0 }}">
+                <input type="hidden" id="game{{x.0}}_hteam_val" value="{{x.3}}">
+                <input type="hidden" id="game{{x.0}}_vteam_val" value="{{x.5}}">
+                {% if x.9 == 'hteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.3}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="selected hteam" value="{{x.7}} {{x.4}}" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% elif x.9 == 'vteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.5}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="selected vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% else %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% endif %}
+        </section>
+{% endfor %}
+</div>
+<div id="region4">
+{% for x in round1_region4 %}
+        <section id="game{{ x.0 }}">
+                <input type="hidden" id="game{{x.0}}_hteam_val" value="{{x.3}}">
+                <input type="hidden" id="game{{x.0}}_vteam_val" value="{{x.5}}">
+                {% if x.9 == 'hteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.3}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="selected hteam" value="{{x.7}} {{x.4}}" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% elif x.9 == 'vteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.5}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="selected vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% else %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% endif %}
+        </section>
+{% endfor %}
+</div>
+</div>
+<div class="round2">
+<div id="region1">
+{% for x in round2_region1 %}
+        <section id="game{{ x.0 }}">
+                <input type="hidden" id="game{{x.0}}_hteam_val" value="{{x.3}}">
+                <input type="hidden" id="game{{x.0}}_vteam_val" value="{{x.5}}">
+                {% if x.9 == 'hteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.3}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="selected hteam" value="{{x.7}} {{x.4}}" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% elif x.9 == 'vteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.5}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="selected vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% else %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% endif %}
+        </section>
+{% endfor %}
+</div>
+<div id="region2">
+{% for x in round2_region2 %}
+        <section id="game{{ x.0 }}">
+                <input type="hidden" id="game{{x.0}}_hteam_val" value="{{x.3}}">
+                <input type="hidden" id="game{{x.0}}_vteam_val" value="{{x.5}}">
+                {% if x.9 == 'hteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.3}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="selected hteam" value="{{x.7}} {{x.4}}" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% elif x.9 == 'vteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.5}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="selected vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% else %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% endif %}
+        </section>
+{% endfor %}
+</div>
+<div id="region3">
+{% for x in round2_region3 %}
+        <section id="game{{ x.0 }}">
+                <input type="hidden" id="game{{x.0}}_hteam_val" value="{{x.3}}">
+                <input type="hidden" id="game{{x.0}}_vteam_val" value="{{x.5}}">
+                {% if x.9 == 'hteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.3}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="selected hteam" value="{{x.7}} {{x.4}}" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% elif x.9 == 'vteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.5}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="selected vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% else %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% endif %}
+        </section>
+{% endfor %}
+</div>
+<div id="region4">
+{% for x in round2_region4 %}
+        <section id="game{{ x.0 }}">
+                <input type="hidden" id="game{{x.0}}_hteam_val" value="{{x.3}}">
+                <input type="hidden" id="game{{x.0}}_vteam_val" value="{{x.5}}">
+                {% if x.9 == 'hteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.3}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="selected hteam" value="{{x.7}} {{x.4}}" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% elif x.9 == 'vteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.5}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="selected vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% else %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% endif %}
+        </section>
+{% endfor %}
+</div>
+</div>
+
+<div class="round3">
+<div id="region1">
+{% for x in round3_region1 %}
+        <section id="game{{ x.0 }}">
+                <input type="hidden" id="game{{x.0}}_hteam_val" value="{{x.3}}">
+                <input type="hidden" id="game{{x.0}}_vteam_val" value="{{x.5}}">
+                {% if x.9 == 'hteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.3}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="selected hteam" value="{{x.7}} {{x.4}}" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% elif x.9 == 'vteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.5}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="selected vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% else %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% endif %}
+        </section>
+{% endfor %}
+</div>
+<div id="region2">
+{% for x in round3_region2 %}
+        <section id="game{{ x.0 }}">
+                <input type="hidden" id="game{{x.0}}_hteam_val" value="{{x.3}}">
+                <input type="hidden" id="game{{x.0}}_vteam_val" value="{{x.5}}">
+                {% if x.9 == 'hteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.3}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="selected hteam" value="{{x.7}} {{x.4}}" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% elif x.9 == 'vteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.5}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="selected vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% else %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% endif %}
+        </section>
+{% endfor %}
+</div>
+<div id="region3">
+{% for x in round3_region3 %}
+        <section id="game{{ x.0 }}">
+                <input type="hidden" id="game{{x.0}}_hteam_val" value="{{x.3}}">
+                <input type="hidden" id="game{{x.0}}_vteam_val" value="{{x.5}}">
+                {% if x.9 == 'hteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.3}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="selected hteam" value="{{x.7}} {{x.4}}" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% elif x.9 == 'vteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.5}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="selected vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% else %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% endif %}
+        </section>
+{% endfor %}
+</div>
+<div id="region4">
+{% for x in round3_region4 %}
+        <section id="game{{ x.0 }}">
+                <input type="hidden" id="game{{x.0}}_hteam_val" value="{{x.3}}">
+                <input type="hidden" id="game{{x.0}}_vteam_val" value="{{x.5}}">
+                {% if x.9 == 'hteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.3}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="selected hteam" value="{{x.7}} {{x.4}}" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% elif x.9 == 'vteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.5}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="selected vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% else %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% endif %}
+        </section>
+{% endfor %}
+</div>
+</div>
+
+<div class="round4">
+<div id="region1">
+{% for x in round4_region1 %}
+        <section id="game{{ x.0 }}">
+                <input type="hidden" id="game{{x.0}}_hteam_val" value="{{x.3}}">
+                <input type="hidden" id="game{{x.0}}_vteam_val" value="{{x.5}}">
+                {% if x.9 == 'hteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.3}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="selected hteam" value="{{x.7}} {{x.4}}" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% elif x.9 == 'vteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.5}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="selected vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% else %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% endif %}
+        </section>
+{% endfor %}
+</div>
+<div id="region2">
+{% for x in round4_region2 %}
+        <section id="game{{ x.0 }}">
+                <input type="hidden" id="game{{x.0}}_hteam_val" value="{{x.3}}">
+                <input type="hidden" id="game{{x.0}}_vteam_val" value="{{x.5}}">
+                {% if x.9 == 'hteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.3}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="selected hteam" value="{{x.7}} {{x.4}}" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% elif x.9 == 'vteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.5}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="selected vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% else %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% endif %}
+        </section>
+{% endfor %}
+</div>
+<div id="region3">
+{% for x in round4_region3 %}
+        <section id="game{{ x.0 }}">
+                <input type="hidden" id="game{{x.0}}_hteam_val" value="{{x.3}}">
+                <input type="hidden" id="game{{x.0}}_vteam_val" value="{{x.5}}">
+                {% if x.9 == 'hteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.3}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="selected hteam" value="{{x.7}} {{x.4}}" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% elif x.9 == 'vteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.5}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="selected vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% else %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% endif %}
+        </section>
+{% endfor %}
+</div>
+<div id="region4">
+{% for x in round4_region4 %}
+        <section id="game{{ x.0 }}">
+                <input type="hidden" id="game{{x.0}}_hteam_val" value="{{x.3}}">
+                <input type="hidden" id="game{{x.0}}_vteam_val" value="{{x.5}}">
+                {% if x.9 == 'hteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.3}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="selected hteam" value="{{x.7}} {{x.4}}" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% elif x.9 == 'vteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.5}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="selected vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% else %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% endif %}
+        </section>
+{% endfor %}
+</div>
+</div>
+
+<div class="round5">
+<div id="region1">
+{% for x in round5_region1 %}
+        <section id="game{{ x.0 }}">
+                <input type="hidden" id="game{{x.0}}_hteam_val" value="{{x.3}}">
+                <input type="hidden" id="game{{x.0}}_vteam_val" value="{{x.5}}">
+                {% if x.9 == 'hteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.3}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="selected hteam" value="{{x.7}} {{x.4}}" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% elif x.9 == 'vteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.5}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="selected vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% else %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% endif %}
+        </section>
+{% endfor %}
+</div>
+<div id="region2">
+{% for x in round5_region2 %}
+        <section id="game{{ x.0 }}">
+                <input type="hidden" id="game{{x.0}}_hteam_val" value="{{x.3}}">
+                <input type="hidden" id="game{{x.0}}_vteam_val" value="{{x.5}}">
+                {% if x.9 == 'hteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.3}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="selected hteam" value="{{x.7}} {{x.4}}" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% elif x.9 == 'vteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.5}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="selected vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% else %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% endif %}
+        </section>
+{% endfor %}
+</div>
+</div>
+
+<div class="round6">
+<div class="region1">
+{% for x in round6_region1 %}
+        <section id="game{{ x.0 }}">
+                <input type="hidden" id="game{{x.0}}_hteam_val" value="{{x.3}}">
+                <input type="hidden" id="game{{x.0}}_vteam_val" value="{{x.5}}">
+                {% if x.9 == 'hteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.3}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="selected hteam" value="{{x.7}} {{x.4}}" onClick="update('game{{x.0}}', 'game{{x.1}}_champ', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}_champ', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_champ" class="champ label label-danger">{{x.7}} {{x.4}}</label>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% elif x.9 == 'vteam' %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="{{x.5}}">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}_champ', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="selected vteam" onClick="update('game{{x.0}}', 'game{{x.1}}_champ', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                        <label id="game{{x.0}}_champ" class="champ label label-danger">{{x.8}} {{x.6}}</label>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+                {% else %}
+                        <input type="hidden" id="game{{x.0}}_val" name="game{{x.0}}" value="">
+                        <button type="button" id="game{{x.0}}_hteam" class="hteam" onClick="update('game{{x.0}}', 'game{{x.1}}_champ', 'game{{x.0}}_hteam_val', {{x.2}}, 'game{{x.0}}_hteam');">{{x.7}} {{x.4}}</button>
+                        <button type="button" id="game{{x.0}}_vteam" class="vteam" onClick="update('game{{x.0}}', 'game{{x.1}}_champ', 'game{{x.0}}_vteam_val', {{x.2}}, 'game{{x.0}}_vteam');">{{x.8}} {{x.6}}</button>
+                	<label id="game{{x.0}}_champ" class="champ label label-danger"></label>
+                        <label id="game{{x.0}}_label" class="error_text" style="display: none">Please select a team for game {{x.0}}</label>
+		{% endif %}
+        </section>
+{% endfor %}
+</div>
+</div>
+</div>
+
+<section class="image_labels" id="round_labels1_img">
+	<img src="/static/images/round_labels.png" alt="Round Labels" />
+</section>
+<section class="image_labels" id="round_labels2_img">
+        <img src="/static/images/round_labels.png" alt="Round Labels" />
+</section>
+{% for x in regions %}
+	<section id="region_{{x.id}}_label">
+		<h3>{{x.region_name}}</h3>
+	</section>
+        <section id="region_{{x.id}}_ff_label">
+                {{x.region_name}}
+        </section>
+{% endfor %}
+<section id="first_four_label">
+	<h3>First Four</h3>
+</section>
+
+<div class="submit">
+	<label class="bracket_name" id="bracket_name_label" for="bracket_name">Bracket Name: </label>
+	<input type="text" class="bracket_name text_box" id="bracket_name" name="bracket_name" value="{{bracket.name}}" disabled>
+	
+	<div class="tiebreaker">
+                <label id="tie_label" for="tiebreak_val" data-toggle="tooltip" data-placement="bottom" title="Select the Total Amount of Points scored by both teams in the National Championship game">Tiebreaker: </label>
+		<input type="range" min=80 max=300 name="tiebreak_range" id="tiebreak_range" onChange="tiebreak('tiebreak_range', 'tiebreak_val');" data-toggle="tooltip" data-placement="bottom" title="Use Slider to pick total points or enter number in text box" value="{{bracket.tiebreaker}}">
+		<input id="tiebreak_val" type="text" class="text_box" onChange="tiebreak('tiebreak_val', 'tiebreak_range');" data-toggle="tooltip" data-placement="bottom" title="Use Slider to pick total points or enter number in text box" value="{{bracket.tiebreaker}}">
+	</div>
+	<button type="submit" value="submit" class="btn btn-primary" id="submit_btn" data-toggle="tooltip" data-placement="bottom" title="Pressing this button will submit your bracket, open a page to print your bracket, and email you with your picks. You can edit your bracket until the first game is started">Submit Your Bracket</button>
+</div>
+</form>
+{% else %}
+<section class="not_authorized">
+	<h1>You are not authorized to edit this bracket</h1>
+</section>
+{% endif %}
+</section>
+</section>
+{% endblock %}

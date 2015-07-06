@@ -1,0 +1,19 @@
+{% block content %}
+<form method="post" action=".">{% csrf_token %}
+  {{ form.as_p }}
+
+  <input type="submit" value="'Submit'" />
+</form>
+{% endblock %}
+
+<form method="post" action=".">{% csrf_token %}
+  <p class="required"><label for="id_username">Username:</label> <input id="id_username" maxlength="30" name="username" type="text" /></p>
+<p class="required"><label for="id_email">E-mail:</label> <input id="id_email" name="email" type="email" /></p>
+<p class="required"><label for="id_password1">Password:</label> <input id="id_password1" name="password1" type="password" /></p>
+<p class="required"><label for="id_password2">Password (again):</label> <input id="id_password2" name="password2" type="password" /></p>
+<p class="required"><label for="id_first">First Name</labe> <input id="id_first" name="first_name" type="text" /></p>
+
+
+  <input type="submit" value="'Submit'" />
+</form>
+
